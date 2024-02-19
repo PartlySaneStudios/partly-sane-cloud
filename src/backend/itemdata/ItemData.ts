@@ -1,3 +1,4 @@
+import { Console } from "console"
 import { serealizeBase64NBT } from "../../utils/DataUtils"
 import { onCooldown } from "../../utils/MathUtils"
 import { prisma } from "../backend"
@@ -19,10 +20,7 @@ async function requestSkyblockItemsEndpoint() {
 
 
 export async function getSkyblockItemData(): Promise<{ success: boolean; data: string }> {
-  const data: {
-    rawBazaar: any
-    rawItem: any
-  
+  const data: {  
     skyblockItems: {
       id: string,
       name: string,
@@ -36,49 +34,36 @@ export async function getSkyblockItemData(): Promise<{ success: boolean; data: s
       averageLowestBin: number
     }[]
   } = {
-    rawBazaar: {},
-    rawItem: {},
     skyblockItems: []
   }
 
   const hypixelItems = await prisma.itemData.findMany({})
+  prisma.$disconnect()
   console.log(hypixelItems.length)
 
   const promises: Promise<void>[] = []
-
-  
-
   for (let i = 0; i < hypixelItems.length; i++) {
 
     promises.push(new Promise<void>((resolve, reject) => {
-      const itemId = hypixelItems[i].itemId
-      const rarity = hypixelItems[i].rarity
-      const name = hypixelItems[i].name
-      const npcSellPrice = hypixelItems[i].npcSellPrice
+      const item = hypixelItems[i]
+      const itemId = item.itemId
+      const rarity = item.rarity
+      const name = item.name
+      const npcSellPrice = item.npcSellPrice
 
-      const pricePromises: Promise<any>[] = []
-
-      pricePromises.push(new Promise<any>((resolve, reject) => {return getBazaarData(itemId)}))
-      pricePromises.push(new Promise<any>((resolve, reject) => {return getAuctionData(itemId)}))
-
-      Promise.all(pricePromises).then((prices) => {
-        const bazaarData = prices[0]
-        const auctionData = prices[1]
-
-        data.skyblockItems.push({
-          id: itemId,
-          name: name,
-          rarity: rarity,
-          npcSellPrice: npcSellPrice,
-          bazaarBuyPrice: bazaarData.buyPrice,
-          bazaarSellPrice: bazaarData.sellPrice,
-          averageBazaarBuy: bazaarData.averageBuy,
-          averageBazaarSell: bazaarData.averageSell,
-          lowestBin: auctionData.lowestBin,
-          averageLowestBin: auctionData.averageLowestBin
-        })
+      data.skyblockItems.push({
+        id: itemId,
+        name: name,
+        rarity: rarity,
+        npcSellPrice: npcSellPrice,
+        bazaarBuyPrice: item.bazaarBuyPrice,
+        bazaarSellPrice: item.bazaarSellPrice,
+        averageBazaarBuy: item.averageBazaarBuy,
+        averageBazaarSell: item.averageBazaarSell,
+        lowestBin: item.lowestBin,
+        averageLowestBin: item.averageLowestBin
       })
-      console.log(i)
+      resolve()
     }))
   }
 
@@ -97,26 +82,30 @@ export async function saveItemData() {
 
     const items: any[] = object?.items ?? []
 
+    const promises: Promise<any>[] = []
     items.forEach((item) => {
       prisma.itemData.findFirst({
         where:{ 
           itemId: item.id
         }
       }).then((found) => {
-        prisma.$disconnect()
         if (found == null) {
-          prisma.itemData.create({
+
+          promises.push(prisma.itemData.create({
             data: {
               itemId: item?.id ?? "",
               rarity: item?.tier ?? "",
               name: item?.name ?? "",
               npcSellPrice: item?.npc_sell_price ?? 0
             }
-          }).then(() => {
-            prisma.$disconnect()
-          })
+          }))
         }
       })
+    })
+
+    Promise.all(promises).then(() => {
+      console.log("Finished saving item data")
+      prisma.$disconnect()
     })
   })
 }

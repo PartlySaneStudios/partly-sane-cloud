@@ -50,15 +50,15 @@ model AuctionHouseData {
   highestBid BigInt
 }
 
-model BazaarData {
-  itemId String @id
-  buyPrice Float
-  sellPrice Float
-}
-
 model ItemData {
   itemId String @id
   rarity String
   name String
   npcSellPrice Float
+  bazaarBuyPrice Float @default(0)
+  bazaarSellPrice Float @default(0)
+  lowestBin Float @default(0)
+  averageLowestBin Float @default(0)
+  averageBazaarSell Float @default(0)
+  averageBazaarBuy Float @default(0)
 }

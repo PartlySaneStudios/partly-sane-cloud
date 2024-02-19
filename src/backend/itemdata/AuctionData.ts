@@ -27,39 +27,36 @@ async function updateAverageLowestBinTable() {
       bin: true
     }
   }).then( (itemIds) => {
-    prisma.$disconnect()
+    const promises: Promise<any>[] = []
     itemIds.forEach((item) => {
       getAuctionData(item.itemId).then((binData) => {
-        prisma.averageLowestBinData.create({
+        promises.push(prisma.averageLowestBinData.create({
           data: {
             itemId: item.itemId,
             time: Date.now(),
             lowestBin: binData.lowestBin
           }
-        }).then(() => {
-          prisma.$disconnect()
-        })
+        }))
       })
-      
+
+      Promise.all(promises).then(()=> {
+        prisma.$disconnect()
+      })
     })
   })
 }
 
 async function updateAuctionsTable() {
   console.log("Updating auction data")
-  prisma.auctionHouseData.findMany({}).then((price) => {
-    console.log(price)
-    prisma.$disconnect()
-  })
   const firstPageResponse = await JSON.parse(await requestSkyblockAuctionsEndpoint(0))
   if (firstPageResponse.success != true) {
     return
   }
   const totalPages = Number(firstPageResponse?.totalPages ?? 0)
   const totalAuctions = Number(firstPageResponse?.totalAuctions ?? 1)
-  let currentAuction = 0
 
   let lastRequestTime = Date.now()
+  const promises: Promise<any>[] = []
   for (let i = 0; i < totalPages; i++) {
     if (onCooldown(lastRequestTime, 500)) {
       await new Promise(f => setTimeout(f, Math.abs(Date.now() - (lastRequestTime + 500))));
@@ -84,27 +81,22 @@ async function updateAuctionsTable() {
     for (let k = 0; k < auctionsObject.length; k++) {
       const auction = auctionsObject[k]
       prisma.auctionHouseData.findFirst({ where:{ uuid: auction?.uuid } }).then( (foundAuction) => {
-        prisma.$disconnect()
         if (foundAuction != null) {
-          prisma.auctionHouseData.update( {
+          promises.push(prisma.auctionHouseData.update( {
             where: {
               uuid: auction.uuid
             },
             data: {
               highestBid: auction.highest_bid_amount
             }
-          }).then((price) => {
-            currentAuction++
-            console.log(`Updated: ${currentAuction}/${totalAuctions} (${Math.round(currentAuction / totalAuctions * 100)}%)`)
-            prisma.$disconnect()
-          })
+          }))
         } else {
 
           const nbtTag = serealizeBase64NBT(auction.item_bytes)
 
           const itemId = nbtTag?.i[0]?.tag?.ExtraAttributes?.id ?? ""
           
-          prisma.auctionHouseData.create({
+          promises.push(prisma.auctionHouseData.create({
             data: {
               uuid: auction.uuid,
               playerUUID: auction.auctioneer,
@@ -117,15 +109,13 @@ async function updateAuctionsTable() {
               startingBid: auction.starting_bid,
               highestBid: auction.highest_bid_amount
             }
-          }).then((price) => {
-            currentAuction++
-            console.log(`Created: ${currentAuction}/${totalAuctions} (${Math.round(currentAuction / totalAuctions * 100)}%)`)
-            prisma.$disconnect()
-          })
+          }))
         }
       })
     }
   }
+
+  Promise.all(promises)
 }
 
 

@@ -20,48 +20,39 @@ export async function saveBazaarData() {
     }
     
     const bazaarData= data.data.products
+    const promises: Promise<any>[] = []
     bazaarData.forEach((product) => {
-      const price = prisma.averageLowestBazaarData.create({
+      promises.push(prisma.averageLowestBazaarData.create({
         data: {
           itemId: product.itemId,
           buyPrice: product.buyPrice,
           sellPrice: product.sellPrice,
           time: Date.now()
         }
-      }).then((price) => {
-        prisma.$disconnect()
-      })
+      }))
     })
 
     bazaarData.forEach((product) => {
-      prisma.bazaarData.findFirst({
+      prisma.itemData.findFirst({
         where: {itemId: product.itemId}
       }).then((response) => {
-        prisma.$disconnect()
         if (response != null) {
-          prisma.bazaarData.update({
+          promises.push(prisma.itemData.update({
             where: {
               itemId: product.itemId
             },
             data: {
-              buyPrice: product.buyPrice,
-              sellPrice: product.sellPrice
+              bazaarBuyPrice: product.buyPrice,
+              bazaarSellPrice: product.sellPrice
             }
-          }).then(() => {
-            prisma.$disconnect()
-          })
-        } else {
-          prisma.bazaarData.create({
-            data: {
-              itemId: product.itemId,
-              buyPrice: product.buyPrice,
-              sellPrice: product.sellPrice
-            }
-          }).then(() => {
-            prisma.$disconnect()
-          })
+          }))
         }
       })
+    })
+
+    Promise.all(promises).then(() => {
+      console.log("finished saving bazaar data")
+      prisma.$disconnect()
     })
   })
 }
@@ -134,7 +125,7 @@ async function requestBazaarData(): Promise<{ success: boolean; data:  {
 
 export async function getBazaarData(itemId: string): Promise<{ buyPrice: number; sellPrice: number; averageBuy: number; averageSell: number }> {
   const averageData = await getAverageLowestBazaar(itemId, 24*1000*60*60) 
-    const currentData =  await prisma.bazaarData.findFirst({
+    const currentData =  await prisma.itemData.findFirst({
       where: {
         itemId: itemId
       }
@@ -145,8 +136,8 @@ export async function getBazaarData(itemId: string): Promise<{ buyPrice: number;
     let averageBuy = 0;
     let averageSell = 0;
     if (currentData != null) {
-      buyPrice = currentData.buyPrice
-      sellPrice = currentData.sellPrice
+      buyPrice = currentData.bazaarBuyPrice
+      sellPrice = currentData.bazaarSellPrice
     }
     if (averageData != null) {
       averageBuy = averageData.averageBuy
