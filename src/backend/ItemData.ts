@@ -173,39 +173,40 @@ export async function updateAuctionCache() {
 
     for (let k = 0; k < auctionsObject.length; k++) {
       const auction = auctionsObject[k]
-      if (await prisma.auctionHouseData.findFirst({ where:{ uuid: auction?.uuid } }) != null) {
-        prisma.auctionHouseData.update( {
-          where: {
-            uuid: auction.uuid
-          },
-          data: {
-            highestBid: auction.highest_bid_amount
-          }
-        }).then((price) => {
-          currentAuction++
-          console.log(`Updated: ${currentAuction}/${totalAuctions} (${Math.round(currentAuction / totalAuctions * 100)}%)`)
-          prisma.$disconnect()
-        })
-
-      } else {
-        prisma.auctionHouseData.create({
-          data: {
-            uuid: auction.uuid,
-            playerUUID: auction.auctioneer,
-            start: auction.start,
-            end: auction.end,
-            itemName: auction.item_name,
-            itemBytes: auction.item_bytes,
-            bin: auction.bin,
-            startingBid: auction.starting_bid,
-            highestBid: auction.highest_bid_amount
-          }
-        }).then((price) => {
-          currentAuction++
-          console.log(`Created: ${currentAuction}/${totalAuctions} (${Math.round(currentAuction / totalAuctions * 100)}%)`)
-          prisma.$disconnect()
-        })
-      }
+      prisma.auctionHouseData.findFirst({ where:{ uuid: auction?.uuid } }).then( (foundAuction) => {
+        if (foundAuction != null) {
+          prisma.auctionHouseData.update( {
+            where: {
+              uuid: auction.uuid
+            },
+            data: {
+              highestBid: auction.highest_bid_amount
+            }
+          }).then((price) => {
+            currentAuction++
+            console.log(`Updated: ${currentAuction}/${totalAuctions} (${Math.round(currentAuction / totalAuctions * 100)}%)`)
+            prisma.$disconnect()
+          })
+        } else {
+          prisma.auctionHouseData.create({
+            data: {
+              uuid: auction.uuid,
+              playerUUID: auction.auctioneer,
+              start: auction.start,
+              end: auction.end,
+              itemName: auction.item_name,
+              itemBytes: auction.item_bytes,
+              bin: auction.bin,
+              startingBid: auction.starting_bid,
+              highestBid: auction.highest_bid_amount
+            }
+          }).then((price) => {
+            currentAuction++
+            console.log(`Created: ${currentAuction}/${totalAuctions} (${Math.round(currentAuction / totalAuctions * 100)}%)`)
+            prisma.$disconnect()
+          })
+        }
+      })
     }
   }
 }
