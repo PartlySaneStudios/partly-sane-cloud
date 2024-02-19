@@ -50,7 +50,7 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
         tamingExperience: number
   
         armorData: string
-        quiverData: number
+        quiverData: string
         petName: string
         selectedDungeonClass: string
         normalRuns: number[]
