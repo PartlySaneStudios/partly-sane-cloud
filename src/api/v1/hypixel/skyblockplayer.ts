@@ -1,4 +1,4 @@
-import { getSkyblockPlayerData } from "../../../backend/HypixelData";
+import { getSkyblockPlayerData } from "../../../backend/PlayerData";
 import { prisma } from "../../../backend/backend";
 import { api } from "../../api";
 

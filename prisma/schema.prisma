@@ -21,3 +21,11 @@ model UserAgents {
   useragent String 
   time Int 
 }
+
+model BazaarItemPrice {
+  uuid String @id @default(uuid())
+  itemId String
+  time BigInt
+  buyOrderPrice Float
+  sellOrderPrice Float
+}
