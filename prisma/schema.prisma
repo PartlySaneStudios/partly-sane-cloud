@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model SkyblockPlayer {
   username String 
   uuid String @id
   updateTime Int
