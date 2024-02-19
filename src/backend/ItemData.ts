@@ -1,3 +1,4 @@
+import { serealizeBase64NBT } from "../utils/DataUtils"
 import { onCooldown } from "../utils/MathUtils"
 import { prisma } from "./backend"
 
@@ -188,6 +189,11 @@ export async function updateAuctionCache() {
             prisma.$disconnect()
           })
         } else {
+
+          const nbtTag = serealizeBase64NBT(auction.item_bytes)
+
+          const itemId = nbtTag?.i[0]?.tag?.ExtraAttributes?.id ?? ""
+          
           prisma.auctionHouseData.create({
             data: {
               uuid: auction.uuid,
@@ -196,6 +202,7 @@ export async function updateAuctionCache() {
               end: auction.end,
               itemName: auction.item_name,
               itemBytes: auction.item_bytes,
+              itemId: itemId,
               bin: auction.bin,
               startingBid: auction.starting_bid,
               highestBid: auction.highest_bid_amount

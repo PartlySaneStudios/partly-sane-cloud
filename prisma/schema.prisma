@@ -37,6 +37,7 @@ model AuctionHouseData {
   end BigInt
   itemName String
   itemBytes String @db.LongText
+  itemId String
   bin Boolean
   startingBid BigInt
   highestBid BigInt

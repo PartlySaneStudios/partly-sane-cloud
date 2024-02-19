@@ -12,6 +12,7 @@
     "@types/node": "^20.11.19",
     "prisma": "^5.9.1",
     "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
     "typescript": "^5.3.3"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
     "dotenv": "^16.4.4",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "prismarine-nbt": "^2.5.0"
   }
 }
