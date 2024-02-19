@@ -29,7 +29,8 @@ async function requestHypixelPlayerEndpoint(uuid: string): Promise<string> {
 
 export async function getSkyblockPlayerData(uuid: string): Promise<{ success: boolean; data: string }> {
   const data: {
-    raw: any
+    rawProfiles: any
+    rawPlayer: any
 
     skyblockPlayer: {
       currentProfileId: string
@@ -64,7 +65,8 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
       }[]
     }
   } = {
-    raw: "",
+    rawProfiles: {},
+    rawPlayer: {},
     skyblockPlayer: {
       currentProfileId: "",
       profiles: []
@@ -89,10 +91,18 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
     }
   }
 
-  const profiles = response.profiles
-  // console.log(profiles[0])
+  if (playerResponse.success != true) {
+    return {
+      success: false,
+      data: response
+    }
+  }
 
-  data.raw = profiles
+  const profiles = response.profiles
+  console.log(playerResponse)
+
+  data.rawProfiles = profiles
+  data.rawPlayer = playerResponse.player
 
   for (let i = 0; profiles[i] != null; i++) {
     const currentProfile = profiles[i]
@@ -153,7 +163,7 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
       totalRuns += normalRuns[i];
     }
 
-    const secretsCount = playerProfile?.player?.achievements?.skyblock_treasure_hunter ?? 0
+    const secretsCount = playerResponse?.player?.achievements?.skyblock_treasure_hunter ?? 0
     
 
     data.skyblockPlayer.profiles.push({
@@ -189,7 +199,7 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
   }
 
   return {
-    success: false,
+    success: true,
     data: JSON.stringify(data)
   }
 }
