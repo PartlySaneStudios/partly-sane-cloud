@@ -3,6 +3,7 @@
 // https://api.hypixel.net/v2/skyblock/profiles
 
 import { env } from "process"
+import { prisma } from "./backend"
 
 
 async function requestSkyblockProfilesEndpoint(uuid: string): Promise<string> {
@@ -73,8 +74,6 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
     }
   }
 
-  
-
   const response = await JSON.parse(await requestSkyblockProfilesEndpoint(uuid))
   if (response.success != true) {
     return {
@@ -99,7 +98,6 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
   }
 
   const profiles = response.profiles
-  console.log(playerResponse)
 
   data.rawProfiles = profiles
   data.rawPlayer = playerResponse.player

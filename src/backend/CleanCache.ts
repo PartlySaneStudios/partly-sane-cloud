@@ -1,6 +1,6 @@
 import { prisma } from "./backend";
 
-const CACHE_TIME_MINUTES = 10
+const CACHE_TIME_MINUTES = 1
 
 // Deletes any data that has been saved for over 10 minutes
 export function cleanCache() {
@@ -10,5 +10,8 @@ export function cleanCache() {
         lte: (Date.now() - (CACHE_TIME_MINUTES * 60 * 1000))
       }
     }
+  }).then(() => {
+    console.log("Cleaning Caches")
+    prisma.$disconnect()
   })
 }

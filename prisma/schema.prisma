@@ -11,11 +11,9 @@ datasource db {
 }
 
 model SkyblockPlayer {
-  username String 
   uuid String @id
-  updateTime Int
-  rawResponse String
-  abstractedResponse String
+  updateTime BigInt
+  response String @db.LongText
 }
 
 model UserAgents {
