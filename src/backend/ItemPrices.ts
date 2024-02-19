@@ -38,8 +38,8 @@ export async function saveBazaarData() {
     prisma.bazaarItemPrice.create({
       data: {
         itemId: product.itemId,
-        buyOrderPrice: product.buyOrderPrice,
-        sellOrderPrice: product.sellOrderPrice,
+        buyPrice: product.buyPrice,
+        sellPrice: product.sellPrice,
         time: Date.now()
       }
     })
@@ -52,8 +52,8 @@ export async function getBazaarData(): Promise<{ success: boolean; data: string 
   const data: {
     products: {
       itemId: string
-      buyOrderPrice: number
-      sellOrderPrice: number
+      buyPrice: number
+      sellPrice: number
       averageBuy: number
       averageSell: number
     }[]
@@ -108,8 +108,8 @@ export async function getBazaarData(): Promise<{ success: boolean; data: string 
 
     data.products.push({
       itemId: string,
-      buyOrderPrice: highestBuyPrice,
-      sellOrderPrice: lowestSellPrice,
+      buyPrice: highestBuyPrice,
+      sellPrice: lowestSellPrice,
       averageBuy: averageBuy,
       averageSell: averageSell
     })
@@ -151,10 +151,10 @@ async function getAverageLowestBazaar(itemId: string, timePeriodMs: number): Pro
   let sellSum = 0
 
   for (let i = 1; i < entries.length - 1; i++) {
-    const buyLeftSide = entries[i - 1].buyOrderPrice
-    const buyRightSide = entries[i].buyOrderPrice
-    const sellLeftSide = entries[i - 1].sellOrderPrice
-    const sellRightSide = entries[i].sellOrderPrice
+    const buyLeftSide = entries[i - 1].buyPrice
+    const buyRightSide = entries[i].buyPrice
+    const sellLeftSide = entries[i - 1].sellPrice
+    const sellRightSide = entries[i].sellPrice
     const height = entries[i].time - previousTime
 
     buySum += .5 * (buyLeftSide + buyRightSide) * Number(height)
@@ -169,8 +169,8 @@ async function getAverageLowestBazaar(itemId: string, timePeriodMs: number): Pro
   let averageBuy = -1
   let averageSell = -1
   if (deltaTime ==BigInt(0)) {
-    averageBuy = entries[0]?.buyOrderPrice ?? -1
-    averageSell = entries[0]?.sellOrderPrice ?? -1
+    averageBuy = entries[0]?.buyPrice ?? -1
+    averageSell = entries[0]?.sellPrice ?? -1
   } else {
     averageBuy = buySum / Number(deltaTime)
     averageSell = sellSum / Number(deltaTime)

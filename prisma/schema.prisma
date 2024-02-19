@@ -26,6 +26,6 @@ model BazaarItemPrice {
   uuid String @id @default(uuid())
   itemId String
   time BigInt
-  buyOrderPrice Float
-  sellOrderPrice Float
+  buyPrice Float
+  sellPrice Float
 }
