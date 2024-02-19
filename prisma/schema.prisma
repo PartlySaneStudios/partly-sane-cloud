@@ -17,3 +17,9 @@ model User {
   rawResponse String
   abstractedResponse String
 }
+
+model UserAgents {
+  id String @id @default(uuid())
+  useragent String 
+  time Int 
+}

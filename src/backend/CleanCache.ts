@@ -1,4 +1,4 @@
-import { prisma } from "./app";
+import { prisma } from "./backend";
 
 const CACHE_TIME_MINUTES = 10
 
