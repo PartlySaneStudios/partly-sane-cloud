@@ -10,16 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  username String 
+model SkyblockPlayer {
   uuid String @id
-  updateTime Int
-  rawResponse String
-  abstractedResponse String
+  updateTime BigInt
+  response String @db.LongText
 }
 
 model UserAgents {
   id String @id @default(uuid())
   useragent String 
   time Int 
+}
+
+model BazaarItemPrice {
+  uuid String @id @default(uuid())
+  itemId String
+  time BigInt
+  buyPrice Float
+  sellPrice Float
 }
