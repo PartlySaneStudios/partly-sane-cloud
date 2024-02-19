@@ -29,3 +29,15 @@ model BazaarItemPrice {
   buyPrice Float
   sellPrice Float
 }
+
+model AuctionHouseData {
+  uuid String @id
+  playerUUID String
+  start BigInt
+  end BigInt
+  itemName String
+  itemBytes String @db.LongText
+  bin Boolean
+  startingBid BigInt
+  highestBid BigInt
+}

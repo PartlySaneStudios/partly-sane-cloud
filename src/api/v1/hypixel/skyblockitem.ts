@@ -1,4 +1,5 @@
 import { getBazaarData } from "../../../backend/ItemData";
+import { prisma } from "../../../backend/backend";
 import { api } from "../../api";
 
 
@@ -7,7 +8,7 @@ let lastReponseTime = 0
 const RESPONSE_CACHE_TIME_MINUTES = 5
 
 export function loadBazaarDataEndpoint() {
-  api.get('/v1/hypixel/bazaardata', (req, res) => {
+  api.get('/v1/hypixel/skyblockitem', (req, res) => {
     if (lastReponseTime + RESPONSE_CACHE_TIME_MINUTES * 5 * 1000 > Date.now() ) {
       console.log("Sending Cached Data")
       res.send(lastResponse)

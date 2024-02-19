@@ -1,3 +1,4 @@
+import { onCooldown } from "../utils/MathUtils"
 import { prisma } from "./backend"
 
 
@@ -24,6 +25,17 @@ async function requestSkyblockBazaarEndpoint() {
   }
 }
 
+async function requestSkyblockAuctionsEndpoint(page: number) {
+  const url = `https://api.hypixel.net/v2/skyblock/auctions?page=${page}`
+  try {
+    const response = await (await fetch(url)).text()
+    return response
+  } catch(exception) {
+    console.error(exception)
+    return ""
+  }
+}
+
 export async function saveBazaarData() {
   console.log("Saving bazaar data")
   const data = await getBazaarData()
@@ -35,15 +47,17 @@ export async function saveBazaarData() {
   const bazaarData: any[] = JSON.parse(data.data).products
   
   bazaarData.forEach((product) => {
-    prisma.bazaarItemPrice.create({
+    const price = prisma.bazaarItemPrice.create({
       data: {
         itemId: product.itemId,
         buyPrice: product.buyPrice,
         sellPrice: product.sellPrice,
         time: Date.now()
       }
+    }).then((price) => {
+      prisma.$disconnect()
     })
-    prisma.$disconnect()
+
     
   })
 }
@@ -121,6 +135,107 @@ export async function getBazaarData(): Promise<{ success: boolean; data: string 
   }
 }
 
+export async function updateAuctionCache() {
+  console.log("Updating auction data")
+  prisma.auctionHouseData.findMany({}).then((price) => {
+    console.log(price)
+    prisma.$disconnect()
+  })
+  const firstPageResponse = await JSON.parse(await requestSkyblockAuctionsEndpoint(0))
+  if (firstPageResponse.success != true) {
+    return
+  }
+  const totalPages = Number(firstPageResponse?.totalPages ?? 0)
+  const totalAuctions = Number(firstPageResponse?.totalAuctions ?? 1)
+  let currentAuction = 0
+
+  let lastRequestTime = Date.now()
+  for (let i = 0; i < totalPages; i++) {
+    if (onCooldown(lastRequestTime, 500)) {
+      await new Promise(f => setTimeout(f, Math.abs(Date.now() - (lastRequestTime + 500))));
+    }
+
+    const response = await requestSkyblockAuctionsEndpoint(i)
+    lastRequestTime = Date.now()
+
+    const responseObject = await JSON.parse(response)
+
+    if (responseObject?.success != true) {
+      continue
+    }
+
+    const auctionsObject: any[] = responseObject?.auctions
+
+    if (auctionsObject == null) {
+      continue
+    }
+
+
+    for (let k = 0; k < auctionsObject.length; k++) {
+      const auction = auctionsObject[k]
+      if (await prisma.auctionHouseData.findFirst({ where:{ uuid: auction?.uuid } }) != null) {
+        prisma.auctionHouseData.update( {
+          where: {
+            uuid: auction.uuid
+          },
+          data: {
+            highestBid: auction.highest_bid_amount
+          }
+        }).then((price) => {
+          currentAuction++
+          console.log(`Updated: ${currentAuction}/${totalAuctions} (${Math.round(currentAuction / totalAuctions * 100)}%)`)
+          prisma.$disconnect()
+        })
+
+      } else {
+        prisma.auctionHouseData.create({
+          data: {
+            uuid: auction.uuid,
+            playerUUID: auction.auctioneer,
+            start: auction.start,
+            end: auction.end,
+            itemName: auction.item_name,
+            itemBytes: auction.item_bytes,
+            bin: auction.bin,
+            startingBid: auction.starting_bid,
+            highestBid: auction.highest_bid_amount
+          }
+        }).then((price) => {
+          currentAuction++
+          console.log(`Created: ${currentAuction}/${totalAuctions} (${Math.round(currentAuction / totalAuctions * 100)}%)`)
+          prisma.$disconnect()
+        })
+      }
+    }
+  }
+}
+
+export async function getSkyblockItemData(): Promise<{ success: boolean; data: string }> {
+  const data: {
+    rawBazaar: any
+    rawItem: any
+  
+    skyblockItems: {
+      id: string,
+      name: string,
+      rarity: string,
+      npcSellPrice: number,
+      bazaarBuyPrice: number,
+      bazaarSellPrice: number,
+      averageBazaarBuy: number,
+      averageBazaarSell: number,
+      lowestBin: number,
+      averageLowestBin: number
+    }[]
+  } = {
+    rawBazaar: {},
+    rawItem: {},
+    skyblockItems: []
+  }
+
+  return {success: true, data: ""}
+}
+
 async function getAverageLowestBazaar(itemId: string, timePeriodMs: number): Promise<{ averageBuy: number; averageSell: number }> {
   let entries = await prisma.bazaarItemPrice.findMany({
     where: {
@@ -132,6 +247,7 @@ async function getAverageLowestBazaar(itemId: string, timePeriodMs: number): Pro
       }
     }
   })
+  prisma.$disconnect()
 
   // Sorts by time so the trapazoidal Riemann sum works
   entries = entries.sort((a, b) => {

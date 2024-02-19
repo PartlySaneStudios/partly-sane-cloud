@@ -24,6 +24,8 @@ export function loadApi() {
           useragent: userAgent,
           time: Date.now()
         }
+      }).then((price) => {
+        prisma.$disconnect()
       })
 
       res.status(401)

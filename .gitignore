@@ -58,6 +58,7 @@ web_modules/
 
 # Optional stylelint cache
 .stylelintcache
+.vscode/settings.json
 
 # Microbundle cache
 .rpt2_cache/
