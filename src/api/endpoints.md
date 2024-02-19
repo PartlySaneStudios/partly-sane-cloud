@@ -11,10 +11,14 @@ A test endpoint that responds with ``Partly Sane Cloud API: V1 Endpoints Enabled
 Parameters:
 ``uuid``: The player's uuid
 
-An endpoint that return three objects: 
+An endpoint that relating to hypixel skyblock player data.
+
+Returns three objects: 
 ``rawPlayer`` is the raw hypixel achievements endpoint object
 ``rawProfiles`` is the raw skyblock profiles endpoint object
 ``skyblockPlayer`` has the specific data needed for the Partly Sane Skies SkyblockPlayer class
+
+Response:
 ```json
 {
   "rawProfiles": {/*Skyblock data ommited*/},
@@ -75,7 +79,9 @@ An endpoint that return three objects:
 
 ## ``/v1/hypixel/bazaardata``
 
-An endpoint that returns a json object in the following format:
+An endpoint relating to hypixel bazaar data.
+
+Response
 ```json
 {
   "products": [
