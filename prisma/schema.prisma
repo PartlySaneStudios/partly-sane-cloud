@@ -22,12 +22,19 @@ model UserAgents {
   time Int 
 }
 
-model BazaarItemPrice {
+model AverageLowestBazaarData {
   uuid String @id @default(uuid())
   itemId String
   time BigInt
   buyPrice Float
   sellPrice Float
+}
+
+model AverageLowestBinData {
+  uuid String @id @default(uuid())
+  itemId String
+  time BigInt
+  lowestBin Float
 }
 
 model AuctionHouseData {
@@ -41,4 +48,17 @@ model AuctionHouseData {
   bin Boolean
   startingBid BigInt
   highestBid BigInt
+}
+
+model BazaarData {
+  itemId String @id
+  buyPrice Float
+  sellPrice Float
+}
+
+model ItemData {
+  itemId String @id
+  rarity String
+  name String
+  npcSellPrice Float
 }
