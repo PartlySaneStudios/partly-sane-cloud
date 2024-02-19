@@ -10,5 +10,5 @@ export function cleanCache() {
         lte: (Date.now() - (CACHE_TIME_MINUTES * 60 * 1000))
       }
     }
-  }  )
+  })
 }
