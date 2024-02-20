@@ -110,7 +110,7 @@ export async function saveItemData() {
     Promise.all(promises).then(() => {
       console.log("Finished saving item data")
       prisma.$disconnect()
-      // saveBazaarData()
+      saveBazaarData()
       saveAuctionData()
       
     })

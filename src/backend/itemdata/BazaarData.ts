@@ -22,14 +22,19 @@ export async function saveBazaarData() {
     const bazaarData= data.data.products
     const promises: Promise<any>[] = []
     bazaarData.forEach((product) => {
-      promises.push(prisma.averageLowestBazaarData.create({
+      promises.push(new Promise<void>((resolve, reject) => {
+        prisma.averageLowestBazaarData.create({
         data: {
           itemId: product.itemId,
           buyPrice: product.buyPrice,
           sellPrice: product.sellPrice,
           time: Date.now()
         }
-      }))
+        }).then(() => {
+          resolve()
+        })
+      }
+      ))
     })
 
     bazaarData.forEach((product) => {
@@ -37,7 +42,7 @@ export async function saveBazaarData() {
         where: {itemId: product.itemId}
       }).then((response) => {
         if (response != null) {
-          promises.push(prisma.itemData.update({
+          promises.push(new Promise<void>((resolve, reject) => {prisma.itemData.update({
             where: {
               itemId: product.itemId
             },
@@ -45,7 +50,10 @@ export async function saveBazaarData() {
               bazaarBuyPrice: product.buyPrice,
               bazaarSellPrice: product.sellPrice
             }
-          }))
+          }).then(() => {
+            resolve()
+          })
+        }))
         }
       })
     })
