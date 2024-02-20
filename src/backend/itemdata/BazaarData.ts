@@ -88,7 +88,7 @@ export async function loadBazaarData() {
           skipDuplicates: true,
           data: []
         }
-        Object.keys(bazaarEntries).forEach((key, index) => {
+        Object.keys(bazaarEntries).forEach((key) => {
           const entry = bazaarEntries[key]
           const sellSummary: any[] = entry.sell_summary
           let lowestSellPrice = sellSummary[0]?.pricePerUnit ?? 0
@@ -106,14 +106,30 @@ export async function loadBazaarData() {
             }
           })
 
-          const itemHistory = cachedItemHistories[index] ?? []
+          const itemHistory = cachedItemHistories[cachedItemIds.indexOf(key)] ?? []
 
           // Finds the trapazoidal Riemann sum to find an estimate of the integral
           let previousTime = itemHistory[0]?.time?.getTime() ?? 0
+          let firstTime = 0
+          let lastTime = 0
+          if (previousTime == 0) {
+            firstTime = Number.MAX_VALUE
+            lastTime = Number.MIN_VALUE
+          } else {
+            firstTime = previousTime
+            lastTime = previousTime
+          }
           let buySum = 0
           let sellSum = 0
 
           for (let i = 1; i < cachedItemHistories.length - 1; i++) {
+            if (itemHistory[i]?.time?.getTime() ?? Number.MAX_VALUE < firstTime){
+              firstTime = itemHistory[i].time.getTime()
+            }
+            if (itemHistory[i]?.time?.getTime() ?? Number.MIN_VALUE > lastTime){
+              lastTime = itemHistory[i]?.time?.getTime()
+            }
+
             const buyLeftSide = itemHistory[i - 1]?.buyPrice ?? 0
             const buyRightSide = itemHistory[i]?.buyPrice ?? 0
             const sellLeftSide = itemHistory[i - 1]?.sellPrice ?? 0
@@ -126,9 +142,7 @@ export async function loadBazaarData() {
 
 
           // Finds the average derivative (rate of change) of the riemann sum
-          let firstTime = itemHistory[0]?.time.getTime() ?? 0
-          let lastTime = itemHistory[itemHistory.length - 1]?.time.getTime() ?? 0
-          let deltaTime = firstTime - lastTime
+          let deltaTime = lastTime - firstTime
           let averageBuy = -1
           let averageSell = -1
           if (deltaTime == 0) {
