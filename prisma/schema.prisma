@@ -90,3 +90,10 @@ model ItemAuctionHistory {
   highestBid BigInt
   time DateTime @default(value: now())
 }
+
+model PublicData {
+  path String @id
+  data String @db.LongText
+  lastTimeUpdate DateTime @default(now())
+}
+

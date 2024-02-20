@@ -6,6 +6,15 @@
 
 A test endpoint that responds with ``Partly Sane Cloud API: V1 Endpoints Enabled`` when enabled.
 
+## /v1/pss/publicdata
+Parameters:
+``path``: The path of the file starting in the repository's main folder (usually path starts with ``/data/``)
+
+An endpoint that proxies the PartlySaneStudios/partly-sane-skeis-public-data GitHub repo for people living outside of GitHub's service area.
+
+Returns:
+The raw file of the GitHub. (This data may be cached)
+
 ## ``/v1/hypixel/skyblockplayer``
 
 Parameters:

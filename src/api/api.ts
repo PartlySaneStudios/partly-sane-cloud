@@ -4,6 +4,7 @@ import { loadV1Endpoint } from "./v1/v1";
 import { prisma } from "../backend/backend";
 import { loadSkyblockPlayerEndpoint } from "./v1/hypixel/skyblockplayer";
 import { loadHypixelSkyblockItemEndpoint } from "./v1/hypixel/skyblockitem";
+import { loadPssPublicdataEndpoint } from "./v1/pss/publicdata";
 
 export const api = express()
 
@@ -45,6 +46,7 @@ function loadEndpoints() {
   loadV1Endpoint()
   loadHypixelSkyblockItemEndpoint()
   loadSkyblockPlayerEndpoint()
+  loadPssPublicdataEndpoint()
 }
 
 
