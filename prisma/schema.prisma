@@ -48,6 +48,7 @@ model AuctionHouseData {
   bin Boolean
   startingBid BigInt
   highestBid BigInt
+  itemData ItemData @relation(fields: [itemId], references: [itemId])
 }
 
 model ItemData {
@@ -61,4 +62,5 @@ model ItemData {
   averageLowestBin Float @default(0)
   averageBazaarSell Float @default(0)
   averageBazaarBuy Float @default(0)
+  auctions AuctionHouseData[]
 }

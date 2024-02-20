@@ -15,14 +15,9 @@ export function loadBackend() {
   cleanCache()
   const cleanCacheInterval = setInterval(cleanCache, CLEAN_CACHE_MINUTES * 60 * 1000);
   
-  saveItemData()
+  saveItemData().then(() => {
+    
+  })
   const saveItemDataInterval = setInterval(saveItemData, ITEM_DATA_CACHE_MINUTES * 60 * 1000)
 
-  saveBazaarData()
-  const bazaarDataSaveInterval = setInterval(saveBazaarData, BAZAAR_SAVE_MINUTES * 60 * 1000);
-
-  saveAuctionData()
-  const auctionCacheSaveInterval = setInterval(saveAuctionData, AUCTION_CACHE_MINUTES * 60 * 1000)  
-
-  
 }

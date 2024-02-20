@@ -2,8 +2,8 @@ import { Console } from "console"
 import { serealizeBase64NBT } from "../../utils/DataUtils"
 import { onCooldown } from "../../utils/MathUtils"
 import { prisma } from "../backend"
-import { getAuctionData } from "./AuctionData"
-import { getBazaarData } from "./BazaarData"
+import { getAuctionData, saveAuctionData } from "./AuctionData"
+import { getBazaarData, saveBazaarData } from "./BazaarData"
 
 
 
@@ -38,7 +38,7 @@ export async function getSkyblockItemData(): Promise<{ success: boolean; data: s
   }
 
   const hypixelItems = await prisma.itemData.findMany({})
-  prisma.$disconnect()
+  
   console.log(hypixelItems.length)
 
   const promises: Promise<void>[] = []
@@ -91,13 +91,17 @@ export async function saveItemData() {
       }).then((found) => {
         if (found == null) {
 
-          promises.push(prisma.itemData.create({
+          promises.push(new Promise<void>((resolve, reject) => {
+            prisma.itemData.create({
             data: {
               itemId: item?.id ?? "",
               rarity: item?.tier ?? "",
               name: item?.name ?? "",
               npcSellPrice: item?.npc_sell_price ?? 0
             }
+            }).then((test) => {
+              resolve()
+            })
           }))
         }
       })
@@ -106,6 +110,9 @@ export async function saveItemData() {
     Promise.all(promises).then(() => {
       console.log("Finished saving item data")
       prisma.$disconnect()
+      // saveBazaarData()
+      saveAuctionData()
+      
     })
   })
 }

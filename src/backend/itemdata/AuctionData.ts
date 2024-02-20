@@ -14,9 +14,16 @@ async function requestSkyblockAuctionsEndpoint(page: number) {
   }
 }
 
-export async function saveAuctionData() {
-  updateAuctionsTable().then(() => {
-    updateAverageLowestBinTable()
+export async function saveAuctionData(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const promises = [updateAverageLowestBinTable(),updateAuctionsTable()]
+    
+
+    Promise.all(promises).then(() => {
+      console.log("Finished saving auctions data")
+      prisma.$disconnect()
+      resolve()
+    })
   })
 }
 
@@ -25,23 +32,24 @@ async function updateAverageLowestBinTable() {
     distinct: ["itemId"],
     where: {
       bin: true
-    }
+    },
+    include: { itemData: true }
   }).then( (itemIds) => {
     const promises: Promise<any>[] = []
     itemIds.forEach((item) => {
-      getAuctionData(item.itemId).then((binData) => {
-        promises.push(prisma.averageLowestBinData.create({
-          data: {
-            itemId: item.itemId,
-            time: Date.now(),
-            lowestBin: binData.lowestBin
-          }
-        }))
-      })
+      promises.push(prisma.averageLowestBinData.create({
+        data: {
+          itemId: item.itemId,
+          time: Date.now(),
+          lowestBin: item.itemData.lowestBin
+        }
+      }))
 
-      Promise.all(promises).then(()=> {
-        prisma.$disconnect()
-      })
+      
+    })
+    Promise.all(promises).then(()=> {
+      console.log("finished updating average lowest bins")
+      
     })
   })
 }
@@ -56,6 +64,7 @@ async function updateAuctionsTable() {
   const totalAuctions = Number(firstPageResponse?.totalAuctions ?? 1)
 
   let lastRequestTime = Date.now()
+  let auctionCount = 0
   const promises: Promise<any>[] = []
   for (let i = 0; i < totalPages; i++) {
     if (onCooldown(lastRequestTime, 500)) {
@@ -79,6 +88,7 @@ async function updateAuctionsTable() {
 
 
     for (let k = 0; k < auctionsObject.length; k++) {
+      auctionCount++
       const auction = auctionsObject[k]
       prisma.auctionHouseData.findFirst({ where:{ uuid: auction?.uuid } }).then( (foundAuction) => {
         if (foundAuction != null) {
@@ -96,7 +106,7 @@ async function updateAuctionsTable() {
 
           const itemId = nbtTag?.i[0]?.tag?.ExtraAttributes?.id ?? ""
           
-          promises.push(prisma.auctionHouseData.create({
+          prisma.auctionHouseData.create({
             data: {
               uuid: auction.uuid,
               playerUUID: auction.auctioneer,
@@ -109,13 +119,20 @@ async function updateAuctionsTable() {
               startingBid: auction.starting_bid,
               highestBid: auction.highest_bid_amount
             }
-          }))
+          }).catch((error) => {
+            // console.error(itemId)
+            // console.error(error)
+            return ""
+          })
         }
       })
     }
   }
 
-  Promise.all(promises)
+  Promise.all(promises).then(()=> {
+    
+    console.log("finished saving aucitons table")
+  })
 }
 
 
@@ -128,7 +145,6 @@ async function getLowestBin(itemId: string): Promise<number> {
       }
     }
   })
-  prisma.$disconnect()
 
   if (binsFound.length == 0) {
     return 0
@@ -157,7 +173,6 @@ async function getAverageLowestBin(itemId: string, timePeriodMs: number): Promis
       }
     }
   })
-  prisma.$disconnect()
 
   // Sorts by time so the trapazoidal Riemann sum works
   entries = entries.sort((a, b) => {
@@ -198,7 +213,6 @@ async function getAverageLowestBin(itemId: string, timePeriodMs: number): Promis
 }
 
 export async function getAuctionData(itemId: string): Promise<{ lowestBin: number; averageLowestBin: number }> {
-
   return {
     lowestBin: await getLowestBin(itemId),
     averageLowestBin: await getAverageLowestBin(itemId, 24 * 1000 * 60 * 60)
