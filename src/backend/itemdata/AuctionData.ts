@@ -15,7 +15,7 @@ async function requestSkyblockAuctionsEndpoint(page: number) {
 }
 
 export async function loadAuctionHouseData() {
-  // console.log("Updating auction data")
+  console.log("Loading auction data")
   const firstPageResponse = await JSON.parse(await requestSkyblockAuctionsEndpoint(0))
   if (firstPageResponse.success != true) {
     return

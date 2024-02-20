@@ -13,6 +13,7 @@ async function requestSkyblockBazaarEndpoint() {
 }
 
 export async function loadBazaarData() {
+  console.log("Loading bazaar data")
   const requestPromises: Promise<string>[] = [
     requestSkyblockBazaarEndpoint()
   ]
@@ -21,7 +22,7 @@ export async function loadBazaarData() {
   .then((endpoints) => {
     const skyblockItemResponse = JSON.parse(endpoints[0])
     if (skyblockItemResponse?.success != true || skyblockItemResponse?.products == null) {
-      console.error("Error getting skyblock items")
+      console.error("Error getting bazaar data")
       return
     }
 
