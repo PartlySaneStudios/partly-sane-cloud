@@ -56,10 +56,10 @@ export async function loadItemData() {
       skyblockItems.forEach(item => {
         if (!itemIds.includes(item.id)) {
           itemsToCreate.data.push({
-            itemId: item.id,
-            rarity: item.tier,
-            name: item.name,
-            npcSellPrice: item.npc_sell_price
+            itemId: item.id ?? "",
+            rarity: item.tier ?? "",
+            name: item.name ?? "",
+            npcSellPrice: item.npc_sell_price ?? 0
           })
         } else {
           itemsToUpdate.push({

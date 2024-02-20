@@ -51,7 +51,7 @@ export async function loadBazaarData() {
         const cachedItemIds = cachedItems.map(it => it.itemId)
         const cachedItemHistories = cachedItems.map(it => it.history)
 
-        const itemsToCreate: {
+        const currentBazaarToCreate: {
           skipDuplicates: boolean
           data: {
             itemId: string
@@ -65,7 +65,7 @@ export async function loadBazaarData() {
           skipDuplicates: true
         }
 
-        const itemsToUpdate: {
+        const currentBazaarToUpdate: {
           where: {
             itemId: string
           }
@@ -76,6 +76,18 @@ export async function loadBazaarData() {
             averageSellPrice: number
           }
         }[] = []
+
+        const bazaarHistoryToCreate: {
+          skipDuplicates: boolean
+          data: {
+            itemId: string,
+            buyPrice: number,
+            sellPrice: number,
+          }[]
+        } = {
+          skipDuplicates: true,
+          data: []
+        }
         Object.keys(bazaarEntries).forEach((key, index) => {
           const entry = bazaarEntries[key]
           const sellSummary: any[] = entry.sell_summary
@@ -102,11 +114,11 @@ export async function loadBazaarData() {
           let sellSum = 0
 
           for (let i = 1; i < cachedItemHistories.length - 1; i++) {
-            const buyLeftSide = itemHistory[i - 1].buyPrice
-            const buyRightSide = itemHistory[i].buyPrice
-            const sellLeftSide = itemHistory[i - 1].sellPrice
-            const sellRightSide = itemHistory[i].sellPrice
-            const height = itemHistory[i].time.getTime() - previousTime
+            const buyLeftSide = itemHistory[i - 1]?.buyPrice ?? 0
+            const buyRightSide = itemHistory[i]?.buyPrice ?? 0
+            const sellLeftSide = itemHistory[i - 1]?.sellPrice ?? 0
+            const sellRightSide = itemHistory[i]?.sellPrice ?? 0
+            const height = (itemHistory[i]?.time?.getTime() ?? 0) - previousTime
 
             buySum += .5 * (buyLeftSide + buyRightSide) * Number(height)
             sellSum += .5 * (sellLeftSide + sellRightSide) * Number(height)
@@ -127,9 +139,14 @@ export async function loadBazaarData() {
             averageSell = sellSum / deltaTime
           }
 
+          bazaarHistoryToCreate.data.push({
+            itemId: key,
+            buyPrice: highestBuyPrice,
+            sellPrice: lowestSellPrice,
+          })
 
           if (cachedItemIds.includes(key)) {
-            itemsToUpdate.push({
+            currentBazaarToUpdate.push({
               where: {
                 itemId: key
               },
@@ -141,7 +158,7 @@ export async function loadBazaarData() {
               }
             })
           } else {
-            itemsToCreate.data.push({
+            currentBazaarToCreate.data.push({
               itemId: key,
               buyPrice: highestBuyPrice,
               sellPrice: lowestSellPrice,
@@ -153,9 +170,9 @@ export async function loadBazaarData() {
 
         const updatePromises: Promise<void>[] = []
 
-        itemsToUpdate.forEach(element => {
+        currentBazaarToUpdate.forEach(element => {
           updatePromises.push(new Promise<void>((resolve, reject) => {
-            prisma.itemData.update(element).then(() => {
+            prisma.itemBazaarData.update(element).then(() => {
               resolve()
             }).catch((reason) => {
               reject(reason)
@@ -164,10 +181,15 @@ export async function loadBazaarData() {
         });
 
 
-        prisma.itemBazaarData.createMany(itemsToCreate).then(() => {
-          Promise.all(updatePromises).then(() => {
-            prisma.$disconnect()
-          })
+        prisma.itemBazaarData.createMany(currentBazaarToCreate).then(() => {
+          
+            Promise.all(updatePromises).then(() => {
+              prisma.$disconnect()
+            }).then(() => {
+              prisma.itemBazaarHistory.createMany(bazaarHistoryToCreate).then (() => {
+                prisma.$disconnect()
+              })
+            })
         })
       }))
     })

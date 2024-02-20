@@ -39,7 +39,7 @@ model ItemData {
 }
 
 model ItemBazaarData {
-  item ItemData @relation(fields: [itemId], references: [itemId])
+  item ItemData? @relation(fields: [itemId], references: [itemId])
   itemId String @id
   buyPrice Float
   sellPrice Float
@@ -49,9 +49,9 @@ model ItemBazaarData {
 }
 
 model ItemBazaarHistory {
-  bazaarData ItemBazaarData @relation(fields: [itemId], references: [itemId])
+  bazaarData ItemBazaarData? @relation(fields: [itemId], references: [itemId]) 
   numId Int @id @default(value: autoincrement())
-  itemId String
+  itemId String? 
   buyPrice Float
   sellPrice Float
   time DateTime @default(value: now())
