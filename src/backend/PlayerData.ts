@@ -3,7 +3,6 @@
 // https://api.hypixel.net/v2/skyblock/profiles
 
 import { env } from "process"
-import { prisma } from "./backend"
 
 
 async function requestSkyblockProfilesEndpoint(uuid: string): Promise<string> {
