@@ -3,6 +3,7 @@ import { cleanCache } from './CleanCache';
 // import { saveBazaarData } from './ItemPrices';
 import { loadItemData } from './itemdata/ItemData';
 import { loadBazaarData } from './itemdata/BazaarData';
+import { loadHypixelSkyblockItemEndpoint } from '../api/v1/hypixel/skyblockitem';
 
 export const prisma = new PrismaClient()
 

@@ -1,4 +1,4 @@
-import { prisma } from "../backend"
+import { prisma } from './../backend';
 
 
 async function requestSkyblockItemsEndpoint() {
@@ -10,6 +10,45 @@ async function requestSkyblockItemsEndpoint() {
     console.error(exception)
     return ""
   }
+}
+
+export async function getSkyblockItemEndpointResponse(): Promise<{ success: boolean; data: string }> {
+
+  const data: {
+    products: {
+      itemId: string
+      rarity: string
+      name: string
+      npcSell: number
+      bazaarBuy: number
+      bazaarSell: number
+      averageBazaarBuy: number
+      averageBazaarSell: number
+    }[]
+  } = {
+    products: []
+  }
+
+  const skyblockItem = await prisma.itemData.findMany({
+    include: {
+      bazaarData: true
+    }
+  })
+
+  skyblockItem.forEach((item) => {
+    data.products.push({
+      itemId: item.itemId,
+      rarity: item.rarity,
+      name: item.name,
+      npcSell: item.npcSellPrice ?? 0,
+      bazaarBuy: item.bazaarData?.buyPrice ?? 0,
+      bazaarSell: item.bazaarData?.sellPrice ?? 0,
+      averageBazaarBuy: item.bazaarData?.averageBuyPrice ?? 0,
+      averageBazaarSell: item.bazaarData?.averageSellPrice ?? 0
+    })
+  })
+
+  return { success: true, data: JSON.stringify(data) }
 }
 
 
