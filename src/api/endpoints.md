@@ -77,22 +77,36 @@ Response:
 }
 ```
 
-## ``/v1/hypixel/bazaardata``
+## ``/v1/hypixel/skyblock``
 
-An endpoint relating to hypixel bazaar data.
+An endpoint relating to skyblock items.
 
 Response
 ```json
 {
   "products": [
     {
-      "itemId": "INK_SACK:3",
-      "buyPrice": 44.7,
-      "sellPrice": 0.7,
-      "averageBuy": 44.7,
-      "averageSell": 0.7
+      "itemId": "ZOOP_THE_FISH",
+      "rarity": "SPECIAL",
+      "name": "Zoop the Fish",
+      "npcSell": 0,
+      "bazaarBuy": 0,
+      "bazaarSell": 0,
+      "averageBazaarBuy": 0,
+      "averageBazaarSell": 0,
+      "lowestBin": 7000000,
+      "averageLowestBin": 7000000
     }
   ]
 }
 ```
-Where the ``averageBuy`` is the average price of a sell order (``buyPrice``, instant buy) over the last 24 hours, and ``averageSell`` is the average price of a buy order (``sellPrice``, instant sell) over the last 24 hours.
+``itemId`` - the skyblock id,
+``rarity`` - the skyblock rarity
+``name`` - the ingame default name
+``npcSell`` - the price to sell directly to a merchant NPC
+``bazaarBuy`` - the bazaar instant buy price (sell order)
+``bazaarSell`` - the bazaar instant sell price (buy order)
+``averageBazaarBuy`` - the average instant buy price over the last 24 hours
+``averageBazaarSell`` - the average instant sell price over the last 24 hours
+``lowestBin`` - the current lowest bin
+``averageLowestBin`` - the current average lowest bin

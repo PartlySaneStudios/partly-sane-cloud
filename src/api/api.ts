@@ -3,7 +3,7 @@ import express from "express";
 import { loadV1Endpoint } from "./v1/v1";
 import { prisma } from "../backend/backend";
 import { loadSkyblockPlayerEndpoint } from "./v1/hypixel/skyblockplayer";
-import { loadBazaarDataEndpoint } from "./v1/hypixel/bazaardata";
+import { loadHypixelSkyblockItemEndpoint } from "./v1/hypixel/skyblockitem";
 
 export const api = express()
 
@@ -43,8 +43,8 @@ export function loadApi() {
 
 function loadEndpoints() {
   loadV1Endpoint()
+  loadHypixelSkyblockItemEndpoint()
   loadSkyblockPlayerEndpoint()
-  loadBazaarDataEndpoint()
 }
 
 
