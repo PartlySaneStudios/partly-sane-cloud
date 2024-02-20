@@ -36,6 +36,7 @@ model ItemData {
   name String
   npcSellPrice Float
   bazaarData ItemBazaarData?
+  aucitonData ItemAuctionData?
 }
 
 model ItemBazaarData {
@@ -54,5 +55,38 @@ model ItemBazaarHistory {
   itemId String? 
   buyPrice Float
   sellPrice Float
+  time DateTime @default(value: now())
+}
+
+model ItemAuctionData {
+  item ItemData? @relation(fields: [itemId], references: [itemId])
+  itemId String @id
+  lowestBin Float
+  averageLowestBin Float
+  auctionHistory ItemAuctionHistory[]
+  lowestBinHistory ItemLowestBinHistory[]
+}
+
+model ItemLowestBinHistory {
+  auctionData ItemAuctionData? @relation(fields: [itemId], references: [itemId]) 
+  numId Int @id @default(value: autoincrement())
+  itemId String
+  price BigInt
+  time DateTime @default(value: now())
+}
+
+model ItemAuctionHistory {
+  auctionData ItemAuctionData? @relation(fields: [itemId], references: [itemId]) 
+  numId Int @id @default(value: autoincrement())
+  auctionUUID String
+  playerUUID String
+  start BigInt
+  end BigInt
+  itemName String
+  itemBytes String @db.LongText
+  itemId String
+  bin Boolean
+  startingBid BigInt
+  highestBid BigInt
   time DateTime @default(value: now())
 }

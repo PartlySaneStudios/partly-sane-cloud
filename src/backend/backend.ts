@@ -4,6 +4,7 @@ import { cleanCache } from './CleanCache';
 import { loadItemData } from './itemdata/ItemData';
 import { loadBazaarData } from './itemdata/BazaarData';
 import { loadHypixelSkyblockItemEndpoint } from '../api/v1/hypixel/skyblockitem';
+import { loadAuctionHouseData } from './itemdata/AuctionData';
 
 export const prisma = new PrismaClient()
 
@@ -15,6 +16,7 @@ export function loadBackend() {
   
   loadItemData()
   loadBazaarData()
+  loadAuctionHouseData()
   // saveBazaarData()
   // const bazaarDataSaveInterval = setInterval(saveBazaarData, CLEAN_CACHE_MINUTES * 60 * 1000);
 }
