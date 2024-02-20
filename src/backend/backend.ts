@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { cleanCache } from './CleanCache';
 // import { saveBazaarData } from './ItemPrices';
 import { loadItemData } from './itemdata/ItemData';
+import { loadBazaarData } from './itemdata/BazaarData';
 
 export const prisma = new PrismaClient()
 
@@ -12,6 +13,7 @@ export function loadBackend() {
   const cleanCacheInterval = setInterval(cleanCache, CLEAN_CACHE_MINUTES * 60 * 1000);
   
   loadItemData()
+  loadBazaarData()
   // saveBazaarData()
   // const bazaarDataSaveInterval = setInterval(saveBazaarData, CLEAN_CACHE_MINUTES * 60 * 1000);
 }

@@ -28,7 +28,7 @@ export async function loadItemData() {
 
     const skyblockItems: any[] = skyblockItemResponse?.items
 
-    const storedItemIds = prisma.itemData.findMany({
+    prisma.itemData.findMany({
       select: {
         itemId: true
       }
@@ -86,17 +86,10 @@ export async function loadItemData() {
     
       prisma.itemData.createMany(itemsToCreate).then(() => {
         Promise.all(updatePromises).then(() => {
-          prisma.$disconnect
+          prisma.$disconnect()
         })
       })
     
-
-
-
-
     })
-
-    
-    
   })
 }
