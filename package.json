@@ -10,7 +10,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.19",
+    "octokit": "^3.1.2",
     "prisma": "^5.9.1",
+    "prismarine-nbt": "^2.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
