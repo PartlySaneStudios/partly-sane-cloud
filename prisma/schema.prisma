@@ -92,7 +92,10 @@ model ItemAuctionHistory {
 }
 
 model PublicData {
-  path String @id
+  uuid String @id @default(uuid())
+  path String 
+  repo String
+  owner String
   data String @db.LongText
   lastTimeUpdate DateTime @default(now())
 }
