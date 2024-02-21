@@ -9,11 +9,15 @@ const octokit = new Octokit({});
 
 const PUBLIC_DATA_CACHE_TIME_MINUTES = 60
 
-export async function getPublicData(path: string): Promise<string> {
+export async function getPublicData(path: string, owner: string, repo: string): Promise<string> {
 
-  const foundData = await prisma.publicData.findUnique({
+  const foundData = await prisma.publicData.findFirst({
     where: {
-      path: path
+      AND: {
+        path: path,
+        repo: repo,
+        owner: owner
+      }
     }
   })
 
@@ -22,11 +26,13 @@ export async function getPublicData(path: string): Promise<string> {
   let data = ""
 
   if (foundData == null) {
-    data = await getData(path, "PartlySaneStudios", "partly-sane-skies-public-data")
+    data = await getData(path, owner, repo)
     prisma.publicData.createMany({
       skipDuplicates: true,
       data: {
         path: path,
+        owner: owner,
+        repo: repo,
         data: data
       }
     }).then(() => {
@@ -34,10 +40,12 @@ export async function getPublicData(path: string): Promise<string> {
     })
   } else {
     if (!onCooldown(foundData.lastTimeUpdate.getTime(), PUBLIC_DATA_CACHE_TIME_MINUTES * 60 * 1000)) { // if the cache is expired
-      data = await getData(path, "PartlySaneStudios", "partly-sane-skies-public-data")
-      prisma.publicData.update({
+      data = await getData(path, owner, repo)
+      prisma.publicData.updateMany({
         where: {
-          path: path
+          path: path,
+          owner: owner,
+          repo: repo
         },
         data: {
           data: data,

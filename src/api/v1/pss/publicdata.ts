@@ -13,8 +13,19 @@ export function loadPssPublicdataEndpoint() {
       res.end()
       return
     }
+
+    let repo = "partly-sane-skies-public-data"
+    let owner = "PartlySaneStudios"
+
+    if (req.query.repo != null) {
+      repo = req.query.repo?.toString() ?? repo
+    }
+
+    if (req.query.owner != null) {
+      owner = req.query.owner?.toString() ?? owner
+    }
     
-    getPublicData(req.query.path?.toString() ?? "").then((data) => {
+    getPublicData(req.query.path?.toString() ?? "", owner, repo).then((data) => {
       res.send(data)
       return
     }).catch((error) => {
