@@ -1,4 +1,3 @@
-import { response } from "express";
 import { getSkyblockItemEndpointResponse } from "../../../backend/itemdata/ItemData";
 import { api } from "../../api";
 

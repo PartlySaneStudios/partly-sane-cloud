@@ -113,6 +113,7 @@ export async function loadAuctionHouseData() {
   }
 
   Promise.all(auctionHistoriesPromises).then(() => {
+    console.log("Finished cacheing auction data")
     prisma.$disconnect()
     // console.log("created all auction data")
     prisma.itemData.findMany({ // finds all of the items that have active auctions 
@@ -267,6 +268,7 @@ export async function loadAuctionHouseData() {
               prisma.$disconnect()
             }).then(() => {
               prisma.itemLowestBinHistory.createMany(averageLowestBinToCreate).then (() => {
+                console.log("Finished updating historical auciton data")
                 prisma.$disconnect()
               })
             })

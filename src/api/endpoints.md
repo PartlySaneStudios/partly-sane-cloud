@@ -15,6 +15,9 @@ An endpoint that proxies the PartlySaneStudios/partly-sane-skeis-public-data Git
 Returns:
 The raw file of the GitHub. (This data may be cached)
 
+## v1/pss/middlemanagement/resetpublicdatacache
+
+
 ## ``/v1/hypixel/skyblockplayer``
 
 Parameters:
