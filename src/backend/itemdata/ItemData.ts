@@ -58,6 +58,8 @@ export async function getSkyblockItemEndpointResponse(): Promise<{ success: bool
 
 
 export async function loadItemData() {
+  try {
+
   console.log("Loading item data")
   const requestPromises: Promise<string>[] = [
     requestSkyblockItemsEndpoint()
@@ -134,5 +136,8 @@ export async function loadItemData() {
       })
     })
   })
-
+}
+catch (error) {
+  console.error(error)
+}
 }

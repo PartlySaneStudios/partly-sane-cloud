@@ -13,6 +13,8 @@ async function requestSkyblockBazaarEndpoint() {
 }
 
 export async function loadBazaarData() {
+  try {
+    
   console.log("Loading bazaar data")
   const requestPromises: Promise<string>[] = [
     requestSkyblockBazaarEndpoint()
@@ -208,4 +210,7 @@ export async function loadBazaarData() {
       }))
     })
   })
+} catch (error) {
+  console.error(error)
+}
 }
