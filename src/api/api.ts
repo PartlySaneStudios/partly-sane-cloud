@@ -13,7 +13,7 @@ export const api = express()
 const USER_AGENT_BYPASS_ENDPOINTS = ["/v1/pss/middlemanagement/resetpublicdata"]
 
 export function loadApi() {
-  const port = 3000;
+  const port = 80;
   api.use(json())
 
   api.use((req, res, next) => {
