@@ -15,9 +15,6 @@ export function loadSkyblockPlayerEndpoint() {
     }
 
     const uuid = req.query.uuid!!.toString()
-    prisma.skyblockPlayer.findMany({}).then((response) => {
-      prisma.$disconnect()
-    })
     prisma.skyblockPlayer.findFirst({
       where: {
         uuid: uuid
@@ -25,10 +22,8 @@ export function loadSkyblockPlayerEndpoint() {
     }).then((cachedResponse) => {
       prisma.$disconnect()
       if (cachedResponse != null) {
-        console.log("Sending cached data")
         res.send(JSON.parse(cachedResponse.response))
       } else {
-        console.log("Sending new data")
         getSkyblockPlayerData(req.query.uuid!!.toString()).then( (data) => {
           if (data.success != true) {
             res.status(500)
@@ -36,7 +31,8 @@ export function loadSkyblockPlayerEndpoint() {
             res.end()
           } else {
             res.send(data.data)
-            prisma.skyblockPlayer.create({
+            prisma.skyblockPlayer.createMany({
+              skipDuplicates: true,
               data: {
                 uuid: uuid,
                 response: data.data,
