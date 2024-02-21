@@ -16,8 +16,14 @@ export function loadBackend() {
   const cleanCacheInterval = setInterval(cleanCache, CACHE_TIME_MINUTES * 60 * 1000);
   
   loadItemData().then(() => {
-    loadAuctionHouseData()
-    loadBazaarData()
+    loadAuctionHouseData().catch((error) => {
+      console.error(error)
+    })
+    loadBazaarData().catch((error) => {
+      console.error(error)
+    })
+  }).catch((error) => {
+    console.error(error)
   })
 
   const loadItemDataInterval = setInterval(loadItemData, LOAD_ITEM_DATA_MINITES * 60 * 1000)
