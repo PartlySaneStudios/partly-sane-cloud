@@ -1,6 +1,5 @@
-import { prisma } from "./backend";
+import { CACHE_TIME_MINUTES, prisma } from "./backend";
 
-const CACHE_TIME_MINUTES = 1
 
 // Deletes any data that has been saved for over 10 minutes
 export function cleanCache() {
