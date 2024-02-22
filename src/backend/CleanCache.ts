@@ -12,5 +12,7 @@ export function cleanCache() {
   }).then(() => {
     console.log("Cleaning Caches")
     prisma.$disconnect()
+  }).catch((error) => {
+    console.error(error)
   })
 }

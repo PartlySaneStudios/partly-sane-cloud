@@ -37,6 +37,8 @@ export async function getPublicData(path: string, owner: string, repo: string): 
       }
     }).then(() => {
       prisma.$disconnect()
+    }).catch((error) => {
+      console.error(error)
     })
   } else {
     if (!onCooldown(foundData.lastTimeUpdate.getTime(), PUBLIC_DATA_CACHE_TIME_MINUTES * 60 * 1000)) { // if the cache is expired
@@ -53,6 +55,8 @@ export async function getPublicData(path: string, owner: string, repo: string): 
         }
       }).then(() => {
         prisma.$disconnect()
+      }).catch((error) => {
+        console.error(error)
       })
     } else {
       data = foundData.data

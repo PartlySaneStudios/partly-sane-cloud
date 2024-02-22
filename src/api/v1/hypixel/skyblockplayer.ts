@@ -51,6 +51,11 @@ export function loadSkyblockPlayerEndpoint() {
           res.end()
         })
       }
+      }).catch((reason) => {
+        console.error(reason)
+        res.status(500)
+        res.send("PSC Internal server error")
+        res.end()
       })
     })
 }
