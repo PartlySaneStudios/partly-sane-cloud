@@ -8,7 +8,7 @@ async function requestSkyblockBazaarEndpoint() {
     return response
   } catch(exception) {
     console.error(exception)
-    return ""
+    return "{}"
   }
 }
 
@@ -207,8 +207,14 @@ export async function loadBazaarData() {
               })
             })
         })
-      }))
+      })).catch((error) => {
+        console.error(error)
+      })
+    }).catch((error) => {
+      console.error(error)
     })
+  }).catch((error) => {
+    console.error(error)
   })
 } catch (error) {
   console.error(error)

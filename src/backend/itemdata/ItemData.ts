@@ -8,7 +8,7 @@ async function requestSkyblockItemsEndpoint() {
     return response
   } catch(exception) {
     console.error(exception)
-    return ""
+    return "{}"
   }
 }
 
@@ -133,8 +133,14 @@ export async function loadItemData() {
     prisma.itemData.createMany(itemsToCreate).then(() => {
       Promise.all(updatePromises).then(() => {
         prisma.$disconnect()
+      }).catch((error) => {
+        console.error(error)
       })
+    }).catch((error) => {
+      console.error(error)
     })
+  }).catch((error) => {
+    console.error(error)
   })
 }
 catch (error) {

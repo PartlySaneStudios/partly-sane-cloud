@@ -10,7 +10,7 @@ async function requestSkyblockAuctionsEndpoint(page: number) {
     return response
   } catch(exception) {
     console.error(exception)
-    return ""
+    return "{}"
   }
 }
 
@@ -107,10 +107,22 @@ export async function loadAuctionHouseData() {
           prisma.$disconnect()
           prisma.itemAuctionHistory.createMany(auctionHistoriesToCreate).then(() => {
             resolve()
+          }).catch((error) => {
+            console.error(error)
           })
+        }).catch((error) => {
+          console.error(error)
         })
+      }).catch((error) => {
+        console.error(error)
       })
-    })}))
+    }).catch((error) => {
+      console.error(error)
+    })
+  }).catch((error) => {
+    console.error(error)
+  })
+  )
   }
 
   Promise.all(auctionHistoriesPromises).then(() => {
@@ -274,7 +286,11 @@ export async function loadAuctionHouseData() {
               })
             })
         })
+    }).catch((error) => {
+      console.error(error)
     })
+  }).catch((error) => {
+    console.error(error)
   })
 }
 catch (error) {

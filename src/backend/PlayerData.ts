@@ -12,7 +12,7 @@ async function requestSkyblockProfilesEndpoint(uuid: string): Promise<string> {
     return response
   } catch(exception) {
     console.error(exception)
-    return ""
+    return "{}"
   }
 }
 
