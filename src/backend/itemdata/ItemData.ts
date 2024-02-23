@@ -38,7 +38,8 @@ export async function getSkyblockItemEndpointResponse(): Promise<{ success: bool
     }
   })
 
-  skyblockItem.forEach((item) => {
+  for (let i = 0; i < skyblockItem.length; i++) {
+    const item = skyblockItem[i]
     data.products.push({
       itemId: item.itemId,
       rarity: item.rarity,
@@ -51,7 +52,7 @@ export async function getSkyblockItemEndpointResponse(): Promise<{ success: bool
       lowestBin: item.aucitonData?.lowestBin ?? 0,
       averageLowestBin: item.aucitonData?.averageLowestBin ?? 0
     })
-  })
+  }
 
   return { success: true, data: JSON.stringify(data) }
 }
@@ -99,7 +100,8 @@ export async function loadItemData() {
         npcSellPrice: number
       }
     }[] = []
-    skyblockItems.forEach(item => {
+    for (let i = 0; i < skyblockItems.length; i++) {
+      const item = skyblockItems[i]
       if (!itemIds.includes(item.id)) {
         itemsToCreate.data.push({
           itemId: item.id ?? "",
@@ -117,10 +119,11 @@ export async function loadItemData() {
           }
         })
       }
-    });
+    };
     const updatePromises: Promise<void>[] = []
 
-    itemsToUpdate.forEach(element => {
+    for (let i = 0; i < itemsToUpdate.length; i++) {
+      const element = itemsToUpdate[i]
       updatePromises.push(new Promise<void>((resolve, reject) => {
         prisma.itemData.update(element).then(() => {
           resolve()
@@ -128,7 +131,7 @@ export async function loadItemData() {
           reject(reason)
         })
       }))
-    });
+    };
   
     prisma.itemData.createMany(itemsToCreate).then(() => {
       Promise.all(updatePromises).then(() => {

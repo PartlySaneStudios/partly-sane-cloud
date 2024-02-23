@@ -90,23 +90,27 @@ export async function loadBazaarData() {
           skipDuplicates: true,
           data: []
         }
-        Object.keys(bazaarEntries).forEach((key) => {
+
+        for (let i = 0; i < Object.keys(bazaarEntries).length; i++) {
+          const key = Object.keys(bazaarEntries)[i]
           const entry = bazaarEntries[key]
           const sellSummary: any[] = entry.sell_summary
           let lowestSellPrice = sellSummary[0]?.pricePerUnit ?? 0
-          sellSummary.forEach((value) => {
+          for (let k = 0; k < sellSummary.length; k++) {
+            const value = sellSummary[k]
             if (value.pricePerUnit < lowestSellPrice) {
               lowestSellPrice = value.pricePerUnit
             }
-          })
+          }
           const buySummary: any[] = entry.buy_summary
 
           let highestBuyPrice = buySummary[0]?.pricePerUnit ?? 0
-          buySummary.forEach((value) => {
+          for (let k = 0; k < buySummary.length; k++){
+            const value = buySummary[k]
             if (value.pricePerUnit > highestBuyPrice) {
               highestBuyPrice = value.pricePerUnit
             }
-          })
+          }
 
           const itemHistory = cachedItemHistories[cachedItemIds.indexOf(key)] ?? []
 
@@ -182,11 +186,12 @@ export async function loadBazaarData() {
               averageSellPrice: averageSell
             })
           }
-        })
+        }
 
         const updatePromises: Promise<void>[] = []
 
-        currentBazaarToUpdate.forEach(element => {
+        for (let i = 0; i < currentBazaarToUpdate.length; i++) {
+          const element = currentBazaarToUpdate[i]
           updatePromises.push(new Promise<void>((resolve, reject) => {
             prisma.itemBazaarData.update(element).then(() => {
               resolve()
@@ -194,7 +199,7 @@ export async function loadBazaarData() {
               reject(reason)
             })
           }))
-        });
+        };
 
 
         prisma.itemBazaarData.createMany(currentBazaarToCreate).then(() => {

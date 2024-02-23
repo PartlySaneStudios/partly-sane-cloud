@@ -73,7 +73,8 @@ export async function loadAuctionHouseData() {
       }
 
       const loopPromises: Promise<void>[] = []
-      auctionEntries.forEach(entry => {
+      for (let i = 0; i < auctionEntries.length; i++) {
+        const entry = auctionEntries[i]
         loopPromises.push(new Promise<void>((resolve, reject) => {
           // console.log(`Auction: ${auctionCount}/${totalAuctions} (${Math.round(auctionCount/totalAuctions * 1000)/10.0}%)`)
           auctionCount++
@@ -101,7 +102,7 @@ export async function loadAuctionHouseData() {
 
           resolve()
         }))
-      });
+      };
       Promise.all(loopPromises).then(() => {
         prisma.itemAuctionData.createMany(auctionDataToCreate).then(() => {
           prisma.$disconnect()
@@ -199,14 +200,16 @@ export async function loadAuctionHouseData() {
         data: [],
         skipDuplicates: true
       }
-  
-      items.forEach(item => {
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
         let lowestBin = Number.MAX_VALUE 
-        item.aucitonData?.auctionHistory.forEach(history => {
-          if (history.startingBid < lowestBin) {
-            lowestBin = Number(history.startingBid)
+        for (let k = 0; k <( item.aucitonData?.auctionHistory?.length ?? 0); k++) {
+          let history = item.aucitonData?.auctionHistory[k]
+          if (history?.startingBid ?? Number.MAX_VALUE < lowestBin) {
+            lowestBin = Number(history!!.startingBid)
           }
-        })
+        }
 
         averageLowestBinToCreate.data.push({
           itemId: item.itemId,
@@ -261,11 +264,13 @@ export async function loadAuctionHouseData() {
             averageLowestBin: averageBuy
           }
         })
-      });
+      };
 
       const updatePromises: Promise<void>[] = []
 
-      currentAuctionHouseToUpdate.forEach(element => {
+      for (let i = 0; i < currentAuctionHouseToUpdate.length; i++) {
+        const element = currentAuctionHouseToUpdate[i]
+
         updatePromises.push(new Promise<void>((resolve, reject) => {
           prisma.itemAuctionData.update(element).then(() => {
             resolve()
@@ -273,7 +278,7 @@ export async function loadAuctionHouseData() {
             reject(reason)
           })
         }))
-      });
+      };
 
 
         prisma.itemAuctionData.createMany(currentAuctionHouseToCreate).then(() => {
