@@ -122,26 +122,31 @@ export async function loadItemData() {
     };
     const updatePromises: Promise<void>[] = []
 
-    for (let i = 0; i < itemsToUpdate.length; i++) {
-      const element = itemsToUpdate[i]
-      updatePromises.push(new Promise<void>((resolve, reject) => {
-        prisma.itemData.update(element).then(() => {
-          resolve()
-        }).catch((reason) => {
-          reject(reason)
+    prisma.$connect().then(() => {
+      for (let i = 0; i < itemsToUpdate.length; i++) {
+        const element = itemsToUpdate[i]
+        updatePromises.push(new Promise<void>((resolve, reject) => {
+          prisma.itemData.update(element).then(() => {
+            resolve()
+          }).catch((reason) => {
+            reject(reason)
+          })
+        }))
+      };
+    }).then(() => {
+      prisma.itemData.createMany(itemsToCreate).then(() => {
+        Promise.all(updatePromises).then(() => {
+          prisma.$disconnect()
+        }).catch((error) => {
+          console.error(error)
         })
-      }))
-    };
-  
-    prisma.itemData.createMany(itemsToCreate).then(() => {
-      Promise.all(updatePromises).then(() => {
-        prisma.$disconnect()
       }).catch((error) => {
         console.error(error)
       })
-    }).catch((error) => {
-      console.error(error)
     })
+
+  
+    
   }).catch((error) => {
     console.error(error)
   })
