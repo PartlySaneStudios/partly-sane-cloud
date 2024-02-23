@@ -1,3 +1,8 @@
+//
+// Written by Su386.
+// See LICENSE for copyright and license notices.
+//
+
 import { AUCTION_CACHE_TIME_MINUTES, PLAYER_CACHE_TIME_MINUTES, prisma } from "./backend";
 
 

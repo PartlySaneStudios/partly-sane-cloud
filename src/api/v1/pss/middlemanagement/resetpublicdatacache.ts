@@ -1,3 +1,8 @@
+//
+// Written by Su386.
+// See LICENSE for copyright and license notices.
+//
+
 import { env } from "process";
 import { api } from "../../../api";
 import { prisma } from "../../../../backend/backend";

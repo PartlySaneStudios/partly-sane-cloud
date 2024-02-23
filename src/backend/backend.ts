@@ -1,3 +1,8 @@
+//
+// Written by Su386.
+// See LICENSE for copyright and license notices.
+//
+
 import { PrismaClient } from '@prisma/client';
 import { cleanCache } from './CleanCache';
 import { loadAuctionHouseData } from './itemdata/AuctionData';

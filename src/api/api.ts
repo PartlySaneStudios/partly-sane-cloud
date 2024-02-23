@@ -1,15 +1,19 @@
+//
+// Written by Su386.
+// See LICENSE for copyright and license notices.
+//
+
 import { json } from "body-parser";
 import express from "express";
-import { loadV1Endpoint } from "./v1/v1";
-import { prisma } from "../backend/backend";
-import { loadSkyblockPlayerEndpoint } from "./v1/hypixel/skyblockplayer";
-import { loadHypixelSkyblockItemEndpoint } from "./v1/hypixel/skyblockitem";
-import { loadPssPublicdataEndpoint } from "./v1/pss/publicdata";
-import { loadPssMiddlemanagementResetpublicdataEndpoint } from "./v1/pss/middlemanagement/resetpublicdatacache";
-import * as https from 'https'
-import * as fs from 'fs'
-import { env } from "process";
+import * as fs from 'fs';
+import * as https from 'https';
 import path from "path";
+import { env } from "process";
+import { loadHypixelSkyblockItemEndpoint } from "./v1/hypixel/skyblockitem";
+import { loadSkyblockPlayerEndpoint } from "./v1/hypixel/skyblockplayer";
+import { loadPssMiddlemanagementResetpublicdataEndpoint } from "./v1/pss/middlemanagement/resetpublicdatacache";
+import { loadPssPublicdataEndpoint } from "./v1/pss/publicdata";
+import { loadV1Endpoint } from "./v1/v1";
 
 export const api = express()
 

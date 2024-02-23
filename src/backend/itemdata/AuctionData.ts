@@ -1,7 +1,11 @@
-import { createGunzip } from 'zlib';
-import { onCooldown } from "../../utils/MathUtils"
-import { serealizeBase64NBT } from "../../utils/SystemUtils"
-import { prisma } from "../backend"
+//
+// Written by Su386.
+// See LICENSE for copyright and license notices.
+//
+
+import { onCooldown } from "../../utils/MathUtils";
+import { serealizeBase64NBT } from "../../utils/SystemUtils";
+import { prisma } from "../backend";
 
 async function requestSkyblockAuctionsEndpoint(page: number) {
   const url = `https://api.hypixel.net/v2/skyblock/auctions?page=${page}`
