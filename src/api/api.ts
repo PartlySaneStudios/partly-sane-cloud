@@ -56,9 +56,9 @@ export function loadApi() {
   })
 
 
-  // api.listen(httpPort, () => {
-  //   console.log(`Server running on port ${httpPort}`);
-  // });
+  api.listen(httpPort, () => {
+    console.log(`Server running on port ${httpPort}`);
+  });
   https.createServer(
     {
       key: fs.readFileSync(path.resolve(env.SSL_KEY ?? "")),
