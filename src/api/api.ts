@@ -6,6 +6,9 @@ import { loadSkyblockPlayerEndpoint } from "./v1/hypixel/skyblockplayer";
 import { loadHypixelSkyblockItemEndpoint } from "./v1/hypixel/skyblockitem";
 import { loadPssPublicdataEndpoint } from "./v1/pss/publicdata";
 import { loadPssMiddlemanagementResetpublicdataEndpoint } from "./v1/pss/middlemanagement/resetpublicdatacache";
+import * as https from 'https'
+import * as fs from 'fs'
+import { env } from "process";
 
 export const api = express()
 
@@ -55,7 +58,13 @@ export function loadApi() {
   api.listen(httpPort, () => {
     console.log(`Server running on port ${httpPort}`);
   });
-  api.listen(httpsPort, () => {
+  https.createServer(
+    {
+      key: fs.readFileSync(env.SSL_KEY),
+      cert: fs.readFileSync(env.SSL_CERT)
+    }, 
+    api)
+    .listen(httpsPort, () => {
     console.log(`Server running on port ${httpsPort}`);
   });
 
