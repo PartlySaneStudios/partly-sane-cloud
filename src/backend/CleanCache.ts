@@ -28,7 +28,6 @@ export function cleanCache() {
         }
       }).then(() => {
         console.log("Cleaned bazaar caches")
-        prisma.$disconnect()
       })
     })
   }).catch((error) => {
