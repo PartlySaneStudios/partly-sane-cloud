@@ -1,7 +1,11 @@
+//
+// Written by Su386.
+// See LICENSE for copyright and license notices.
+//
+
 import { loadApi } from './api/api';
 
-import dotenv from 'dotenv'
-import { cleanCache } from './backend/CleanCache';
+import dotenv from 'dotenv';
 import { cleanBackend, loadBackend, prisma } from './backend/backend';
 
 const CLEAN_CACHE_MINUTES = 1
