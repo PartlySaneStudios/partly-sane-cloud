@@ -6,7 +6,8 @@ import { loadItemData } from './itemdata/ItemData';
 
 export const prisma = new PrismaClient()
 
-export const CACHE_TIME_MINUTES = 10
+export const PLAYER_CACHE_TIME_MINUTES = 10
+export const AUCTION_CACHE_TIME_MINUTES = 24*60*60
 const LOAD_ITEM_DATA_MINITES = 100
 const LOAD_BAZAAR_DATA_MINUTES = 7
 const LOAD_AUCTION_DATA_MINUTES = 12
@@ -18,7 +19,7 @@ let cleanCacheInterval: any
 
 export function loadBackend() {
   cleanCache()
-  cleanCacheInterval = setInterval(cleanCache, CACHE_TIME_MINUTES * 60 * 1000);
+  cleanCacheInterval = setInterval(cleanCache, PLAYER_CACHE_TIME_MINUTES * 60 * 1000);
   
   loadItemData().then(() => {
     loadAuctionHouseData().catch((error) => {
