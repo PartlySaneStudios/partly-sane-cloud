@@ -9,6 +9,7 @@ import { loadPssMiddlemanagementResetpublicdataEndpoint } from "./v1/pss/middlem
 import * as https from 'https'
 import * as fs from 'fs'
 import { env } from "process";
+import path from "path";
 
 export const api = express()
 
@@ -55,13 +56,13 @@ export function loadApi() {
   })
 
 
-  api.listen(httpPort, () => {
-    console.log(`Server running on port ${httpPort}`);
-  });
+  // api.listen(httpPort, () => {
+  //   console.log(`Server running on port ${httpPort}`);
+  // });
   https.createServer(
     {
-      key: fs.readFileSync(env.SSL_KEY),
-      cert: fs.readFileSync(env.SSL_CERT)
+      key: fs.readFileSync(path.resolve(env.SSL_KEY ?? "")),
+      cert: fs.readFileSync(path.resolve(env.SSL_CERT ?? ""))
     }, 
     api)
     .listen(httpsPort, () => {
@@ -78,8 +79,3 @@ function loadEndpoints() {
   loadPssPublicdataEndpoint()
   loadPssMiddlemanagementResetpublicdataEndpoint()
 }
-
-
-
-
-
