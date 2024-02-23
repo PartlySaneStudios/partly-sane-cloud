@@ -13,7 +13,8 @@ export const api = express()
 const USER_AGENT_BYPASS_ENDPOINTS = ["/v1/pss/middlemanagement/resetpublicdata"]
 
 export function loadApi() {
-  const port = 80;
+  const httpPort = 80;
+  const httpsPort = 443
   api.use(json())
 
   api.use((req, res, next) => {
@@ -51,8 +52,11 @@ export function loadApi() {
   })
 
 
-  api.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+  api.listen(httpPort, () => {
+    console.log(`Server running on port ${httpPort}`);
+  });
+  api.listen(httpsPort, () => {
+    console.log(`Server running on port ${httpsPort}`);
   });
 
   loadEndpoints()  
