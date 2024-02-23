@@ -16,12 +16,6 @@ model SkyblockPlayer {
   response String @db.LongText
 }
 
-model UserAgents {
-  id String @id @default(uuid())
-  useragent String 
-  time Int 
-}
-
 model BazaarItemPrice {
   uuid String @id @default(uuid())
   itemId String

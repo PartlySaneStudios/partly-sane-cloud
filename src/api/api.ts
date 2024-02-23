@@ -40,13 +40,6 @@ export function loadApi() {
         userAgent = req.headers["user-agent"]!!
       }
 
-      prisma.userAgents.create({
-        data: {
-          useragent: userAgent,
-          time: Date.now()
-        }
-      })
-
       res.status(401)
       res.send("Unauthorized")
       return
