@@ -15,47 +15,51 @@ export function loadSkyblockPlayerEndpoint() {
     }
 
     const uuid = req.query.uuid!!.toString()
-    prisma.skyblockPlayer.findFirst({
-      where: {
-        uuid: uuid
-      }
-    }).then((cachedResponse) => {
-      prisma.$disconnect()
-      if (cachedResponse != null) {
-        res.send(JSON.parse(cachedResponse.response))
-      } else {
-        getSkyblockPlayerData(req.query.uuid!!.toString()).then( (data) => {
-          if (data.success != true) {
+    prisma.$connect().then(() => {
+      prisma.skyblockPlayer.findFirst({
+        where: {
+          uuid: uuid
+        }
+      }).then((cachedResponse) => {
+        prisma.$disconnect()
+        if (cachedResponse != null) {
+          res.send(JSON.parse(cachedResponse.response))
+        } else {
+          getSkyblockPlayerData(req.query.uuid!!.toString()).then( (data) => {
+            if (data.success != true) {
+              res.status(500)
+              res.send(data.data)
+              res.end()
+            } else {
+              res.send(data.data)
+              prisma.$connect().then(() => {
+                prisma.skyblockPlayer.createMany({
+                  skipDuplicates: true,
+                  data: {
+                    uuid: uuid,
+                    response: data.data,
+                    updateTime: Date.now()
+                  }
+                }).then(() => {
+                  prisma.$disconnect()
+                })
+              })
+              res.end()
+            }
+    
+          }).catch((reason) => {
+            console.error(reason)
             res.status(500)
-            res.send(data.data)
+            res.send("PSC Internal server error")
             res.end()
-          } else {
-            res.send(data.data)
-            prisma.skyblockPlayer.createMany({
-              skipDuplicates: true,
-              data: {
-                uuid: uuid,
-                response: data.data,
-                updateTime: Date.now()
-              }
-            }).then(() => {
-              prisma.$disconnect()
-            })
-            res.end()
-          }
-  
+          })
+        }
         }).catch((reason) => {
           console.error(reason)
           res.status(500)
           res.send("PSC Internal server error")
           res.end()
         })
-      }
-      }).catch((reason) => {
-        console.error(reason)
-        res.status(500)
-        res.send("PSC Internal server error")
-        res.end()
-      })
     })
+  })
 }
