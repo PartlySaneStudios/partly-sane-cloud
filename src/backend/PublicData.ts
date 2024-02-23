@@ -4,13 +4,12 @@
 //
 
 import { Octokit } from 'octokit'
-import { prisma } from './backend';
+import { PUBLIC_DATA_CACHE_TIME_MINUTES, prisma } from './backend';
 import { onCooldown } from '../utils/MathUtils';
 
 const octokit = new Octokit({});
 
 
-const PUBLIC_DATA_CACHE_TIME_MINUTES = 60
 
 export async function getPublicData(path: string, owner: string, repo: string): Promise<string> {
 
