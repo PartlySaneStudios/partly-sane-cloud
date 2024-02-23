@@ -2,7 +2,10 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       DATABASE_URL: string
-      HYPIXEL_API_KEY: String
+      HYPIXEL_API_KEY: string
+      SSL_CERT: string
+      SSL_KEY: string
+      CLEAR_CACHE_KEY: string
     }
   }
 }
