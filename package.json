@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsc && npx nodemon -x 'npx node ./dist/index.js || touch ./dist/index.js'"
+    "start": "npx nodemon --ignore './dist/*.js' -x 'npx tsc && npx node ./dist/index.js || touch ./dist/index.js'"
   },
   "author": "",
   "license": "ISC",
