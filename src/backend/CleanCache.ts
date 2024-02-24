@@ -43,6 +43,8 @@ export function cleanCache() {
         }
       }).then(() => {
         console.log("Cleaned bazaar caches")
+      }).then(() => {
+        prisma.$disconnect()
       })
     })
   }).catch((error) => {
