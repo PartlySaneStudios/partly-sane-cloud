@@ -18,10 +18,20 @@ export function cleanCache() {
   }).then(() => {
     console.log("Cleaned skyblock player caches")
     prisma.itemAuctionHistory.deleteMany({
+      
       where: {
-        time: {
-          lte: new Date(Date.now() - (AUCTION_CACHE_TIME_MINUTES * 60 * 1000))
-        }
+        OR: [
+          {
+            time: {
+              lte: new Date(Date.now() - (AUCTION_CACHE_TIME_MINUTES * 60 * 1000))
+            },
+          },
+          {
+            end: {
+              lte: Date.now()
+            }
+          }
+        ]
       }
     }).then(() => {
       console.log("Cleaned auction caches")
