@@ -28,16 +28,16 @@ export function loadBackend() {
   cleanCacheInterval = setInterval(cleanCache, PLAYER_CACHE_TIME_MINUTES * 60 * 1000);
   
   loadItemData()
-  // .then(() => {
-  //   loadAuctionHouseData().catch((error) => {
-  //     console.error(error)
-  //   })
-  //   loadBazaarData().catch((error) => {
-  //     console.error(error)
-  //   })
-  // }).catch((error) => {
-  //   console.error(error)
-  // })
+  .then(() => {
+    loadAuctionHouseData().catch((error) => {
+      console.error(error)
+    })
+    loadBazaarData().catch((error) => {
+      console.error(error)
+    })
+  }).catch((error) => {
+    console.error(error)
+  })
 
   loadItemDataInterval = setInterval(loadItemData, LOAD_ITEM_DATA_MINITES * 60 * 1000)
   loadBazaarDataInterval = setInterval(loadBazaarData, LOAD_BAZAAR_DATA_MINUTES * 60 * 1000)
