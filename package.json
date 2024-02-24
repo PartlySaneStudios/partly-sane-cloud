@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "index": "npx prisma generate && npx ts-node ./src/index.ts"
+    "start": "npx tsc && npx nodemon -x 'npx node ./dist/index.js || touch ./dist/index.js'"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.19",
+    "nodemon": "^3.1.0",
     "octokit": "^3.1.2",
     "prisma": "^5.9.1",
     "prismarine-nbt": "^2.5.0",
