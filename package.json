@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon --ignore '*.js' --exec 'npx tsc && npx node ./dist/index.js || touch ./src/index.ts'"
+    "dev": "npx nodemon -exec 'npx ts-node ./src/index.ts' ",
+    "deploy": "npx pm2 stop ./dist/index.js && npx tsc && npx pm2 start ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
