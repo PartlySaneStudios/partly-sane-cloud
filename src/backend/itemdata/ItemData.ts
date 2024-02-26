@@ -93,6 +93,8 @@ export async function loadItemData() {
       rarity: string
       name: string
       npcSellPrice: number
+      unstackable: boolean
+      material: string
     }[]
     } = {
       data: []
@@ -112,7 +114,9 @@ export async function loadItemData() {
           itemId: item.id ?? "",
           rarity: item.tier ?? "",
           name: item.name ?? "",
-          npcSellPrice: item.npc_sell_price ?? 0
+          npcSellPrice: item.npc_sell_price ?? 0,
+          unstackable: item.unstackable ?? false,
+          material: item.material ?? ""
         })
       } else {
         itemsToUpdate.push({
