@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon -exec 'npx ts-node ./src/index.ts' ",
+    "dev": "npx nodemon -x 'ts-node ./src/index.ts' ",
     "deploy": "npx pm2 stop ./dist/index.js && npx tsc && npx pm2 start ./dist/index.js"
   },
   "author": "",

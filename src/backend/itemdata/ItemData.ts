@@ -30,7 +30,9 @@ export async function getSkyblockItemEndpointResponse(): Promise<{ success: bool
       averageBazaarBuy: number
       averageBazaarSell: number
       lowestBin: number,
-      averageLowestBin: number
+      averageLowestBin: number,
+      material: string,
+      unstackable: boolean
     }[]
   } = {
     products: []
@@ -55,7 +57,9 @@ export async function getSkyblockItemEndpointResponse(): Promise<{ success: bool
       averageBazaarBuy: item.bazaarData?.averageBuyPrice ?? 0,
       averageBazaarSell: item.bazaarData?.averageSellPrice ?? 0,
       lowestBin: item.aucitonData?.lowestBin ?? 0,
-      averageLowestBin: item.aucitonData?.averageLowestBin ?? 0
+      averageLowestBin: item.aucitonData?.averageLowestBin ?? 0,
+      material: item.material ?? "",
+      unstackable: item.unstackable ?? false
     })
   }
 
