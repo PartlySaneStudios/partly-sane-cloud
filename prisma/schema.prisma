@@ -29,6 +29,8 @@ model ItemData {
   rarity String
   name String
   npcSellPrice Float
+  unstackable Boolean
+  material String
   bazaarData ItemBazaarData?
   aucitonData ItemAuctionData?
 }

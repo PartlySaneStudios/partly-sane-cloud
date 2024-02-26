@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon -exec 'npx ts-node ./src/index.ts' ",
+    "dev": "npx nodemon -x 'ts-node ./src/index.ts' ",
     "deploy": "npx pm2 stop ./dist/index.js && npx tsc && npx pm2 start ./dist/index.js"
   },
   "author": "",
@@ -16,7 +16,8 @@
     "prisma": "^5.9.1",
     "prismarine-nbt": "^2.5.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "uuid": "^9.0.1"
   },
   "dependencies": {
     "@prisma/client": "^5.9.1",
