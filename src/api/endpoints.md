@@ -6,6 +6,10 @@
 
 A test endpoint that responds with ``Partly Sane Cloud API: V1 Endpoints Enabled`` when enabled.
 
+## ``/v1/status``
+
+A test endpoint that responds with ``{ "success": true }`` when the server is up.
+
 ## /v1/pss/publicdata
 Parameters:
 ``path``: The path of the file starting in the repository's main folder (usually path starts with ``/data/``)
