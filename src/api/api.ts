@@ -14,11 +14,15 @@ import { loadSkyblockPlayerEndpoint } from "./v1/hypixel/skyblockplayer";
 import { loadPssMiddlemanagementResetpublicdataEndpoint } from "./v1/pss/middlemanagement/resetpublicdatacache";
 import { loadPssPublicdataEndpoint } from "./v1/pss/publicdata";
 import { loadV1Endpoint } from "./v1/v1";
+import { loadStatusEndpoint } from "./v1/status";
 
 export const api = express()
 
 
-const USER_AGENT_BYPASS_ENDPOINTS = ["/v1/pss/middlemanagement/resetpublicdata"]
+const USER_AGENT_BYPASS_ENDPOINTS = [
+  "/v1/pss/middlemanagement/resetpublicdata", 
+  "/v1/status"
+]
 
 export function loadApi() {
   const httpPort = 80;
@@ -81,4 +85,5 @@ function loadEndpoints() {
   loadSkyblockPlayerEndpoint()
   loadPssPublicdataEndpoint()
   loadPssMiddlemanagementResetpublicdataEndpoint()
+  loadStatusEndpoint()
 }
