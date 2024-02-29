@@ -6,7 +6,7 @@
 import { api } from "../api";
 
 
-export function loadV1Endpoint() {
+export function loadStatusEndpoint() {
   api.get('/v1/status', (req, res) => {
     res.status(200)
     res.send("{ \"success\": true }")

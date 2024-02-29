@@ -14,6 +14,7 @@ import { loadSkyblockPlayerEndpoint } from "./v1/hypixel/skyblockplayer";
 import { loadPssMiddlemanagementResetpublicdataEndpoint } from "./v1/pss/middlemanagement/resetpublicdatacache";
 import { loadPssPublicdataEndpoint } from "./v1/pss/publicdata";
 import { loadV1Endpoint } from "./v1/v1";
+import { loadStatusEndpoint } from "./v1/status";
 
 export const api = express()
 
@@ -84,4 +85,5 @@ function loadEndpoints() {
   loadSkyblockPlayerEndpoint()
   loadPssPublicdataEndpoint()
   loadPssMiddlemanagementResetpublicdataEndpoint()
+  loadStatusEndpoint()
 }
