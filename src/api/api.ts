@@ -18,7 +18,7 @@ import { loadV1Endpoint } from "./v1/v1";
 export const api = express()
 
 
-const USER_AGENT_BYPASS_ENDPOINTS = ["/v1/pss/middlemanagement/resetpublicdata"]
+const USER_AGENT_BYPASS_ENDPOINTS = ["/v1/pss/middlemanagement/resetpublicdata", "/v1/status"]
 
 export function loadApi() {
   const httpPort = 80;
