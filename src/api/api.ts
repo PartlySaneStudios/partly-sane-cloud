@@ -25,7 +25,7 @@ const USER_AGENT_BYPASS_ENDPOINTS = [
 ]
 
 export function loadApi() {
-  const httpPort = 81;
+  const httpPort = 80;
   const httpsPort = 443
   api.use(json())
 
