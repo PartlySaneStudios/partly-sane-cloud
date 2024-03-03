@@ -11,7 +11,7 @@ async function requestSkyblockProfilesEndpoint(uuid: string): Promise<string> {
   try {
     const response = await (await fetch(url)).text()
     return response
-  } catch(exception) {
+  } catch (exception) {
     console.error(exception)
     return "{}"
   }
@@ -22,7 +22,7 @@ async function requestHypixelPlayerEndpoint(uuid: string): Promise<string> {
   try {
     const response = await (await fetch(url)).text()
     return response
-  } catch(exception) {
+  } catch (exception) {
     console.error(exception)
     return ""
   }
@@ -48,16 +48,16 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
         fishingExperience: number
         alchemyExperience: number
         tamingExperience: number
-  
+
         armorData: string
         quiverData: string
         petName: string
         selectedDungeonClass: string
         normalRuns: number[]
         masterModeRuns: number[]
-  
+
         totalRuns: number
-  
+
         secretsCount: number
         baseHealth: number
         baseDefense: number
@@ -82,7 +82,7 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
     }
   }
 
-  const playerResponse = await JSON.parse(await requestHypixelPlayerEndpoint(uuid)) 
+  const playerResponse = await JSON.parse(await requestHypixelPlayerEndpoint(uuid))
   if (response.success != true) {
     return {
       success: false,
@@ -112,7 +112,7 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
       data.skyblockPlayer.currentProfileId = profileId
     }
     const skyblockExperience = playerProfile?.leveling?.experience ?? 0
-    const catacombsExpereince = playerProfile?.dungeons?.dungeon_types?.catacombs?.experience ?? 0
+    const catacombsExperience = playerProfile?.dungeons?.dungeon_types?.catacombs?.experience ?? 0
     const combatExperience = playerProfile?.player_data?.experience?.SKILL_COMBAT ?? 0
     const miningExperience = playerProfile?.player_data?.experience?.SKILL_MINING ?? 0
     const foragingExperience = playerProfile?.player_data?.experience?.SKILL_FORAGING ?? 0
@@ -121,14 +121,14 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
     const fishingExperience = playerProfile?.player_data?.experience?.SKILL_FISHING ?? 0
     const alchemyExperience = playerProfile?.player_data?.experience?.SKILL_ALCHEMY ?? 0
     const tamingExperience = playerProfile?.player_data?.experience?.SKILL_TAMING ?? 0
-    
+
     const armorData = playerProfile?.inventory?.inv_armor?.data ?? "" // TODO: convert this base 64 nbt string and add an "armorName" field
     const quiverData = playerProfile?.inventory?.bag_contents?.quiver?.data ?? ""
 
     let selectedPetName = ""
     if (playerProfile?.pets_data?.pets != null) {
       const pets = playerProfile?.pets_data?.pets
-      for (let i = 0; pets[i] != null ; i++) {
+      for (let i = 0; pets[i] != null; i++) {
         const pet = pets[i]
         if (pet?.active != true) {
           continue
@@ -147,7 +147,7 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
       if (completions != null && completions[i] != null) {
         masterModeRuns[i] = completions[i]
       }
-    
+
 
       totalRuns += masterModeRuns[i];
     }
@@ -157,18 +157,18 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
       if (completions != null && completions[i] != null) {
         normalRuns[i] = completions[i]
       }
-    
+
       totalRuns += normalRuns[i];
     }
 
     const secretsCount = playerResponse?.player?.achievements?.skyblock_treasure_hunter ?? 0
-    
+
 
     data.skyblockPlayer.profiles.push({
       profileId: profileId,
       selected: selected,
       skyblockExperience: skyblockExperience,
-      catacombsExperience: catacombsExpereince,
+      catacombsExperience: catacombsExperience,
       combatExperience: combatExperience,
       miningExperience: miningExperience,
       foragingExperience: foragingExperience,

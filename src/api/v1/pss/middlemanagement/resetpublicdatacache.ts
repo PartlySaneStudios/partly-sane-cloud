@@ -15,11 +15,11 @@ export function loadPssMiddlemanagementResetpublicdataEndpoint() {
       res.send("Unfortunately this file is not in the bathroom of a mansion, soooo skill iss-you?")
       res.end()
       return
-    } 
+    }
 
     prisma.publicData.deleteMany({}).then(() => {
       prisma.$disconnect()
-      res.send("Succesfully cleared the public data cache")
+      res.send("Successfully cleared the public data cache")
     }).catch(() => {
       res.status(500)
       res.send("Failed to clear the public data cache")

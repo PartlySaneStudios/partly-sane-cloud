@@ -14,7 +14,7 @@ A test endpoint that responds with ``{ "success": true }`` when the server is up
 Parameters:
 ``path``: The path of the file starting in the repository's main folder (usually path starts with ``/data/``)
 
-An endpoint that proxies the PartlySaneStudios/partly-sane-skeis-public-data GitHub repo for people living outside of GitHub's service area.
+An endpoint that proxies the PartlySaneStudios/partly-sane-skies-public-data GitHub repo for people living outside of GitHub's service area.
 
 Returns:
 The raw file of the GitHub. (This data may be cached)
@@ -37,8 +37,8 @@ Returns three objects:
 Response:
 ```json
 {
-  "rawProfiles": {/*Skyblock data ommited*/},
-  "rawPlayer": {/*Skyblock data ommited*/},
+  "rawProfiles": {/*Skyblock data omitted*/},
+  "rawPlayer": {/*Skyblock data omitted*/},
   "skyblockPlayer": {
     "currentProfileId": "",
     "profiles": [

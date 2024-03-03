@@ -17,13 +17,13 @@ async function main() {
   process.on('SIGTERM', cleanup);
 
   function cleanup() {
-      cleanBackend()
+    cleanBackend()
 
-      // Close Prisma Client connection
-      prisma.$disconnect();
+    // Close Prisma Client connection
+    prisma.$disconnect();
 
-      // Exit the process
-      process.exit(0);
+    // Exit the process
+    process.exit(0);
   }
 
 

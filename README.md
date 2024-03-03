@@ -44,8 +44,8 @@ Once you have set up your ``.env`` file, run ``npm install`` to install all pack
 
 ### Prisma
 
-After all packages have been created, run ``npx prisma migrate dev`` to migrate your ``schema.prisma`` file to the database (Make sure you have a valid database url).
+After all packages have been installed, run ``npx prisma migrate dev`` to migrate your ``schema.prisma`` file to the database (Make sure you have a valid database url).
 
 ### Run
 
-To start the server, you can run either ``npm run dev``, ``npm run deploy``, ``tsc && node ./dist/index.js`` ,or ``ts-node ./src/index.ts``
+To start the server, you can run either ``npm run dev`` (does not work rn), ``npm run deploy`` (only do this for servers), ``tsc && node ./dist/index.js``, or ``ts-node ./src/index.ts``

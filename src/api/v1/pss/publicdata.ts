@@ -28,7 +28,7 @@ export function loadPssPublicdataEndpoint() {
     if (req.query.owner != null) {
       owner = req.query.owner?.toString() ?? owner
     }
-    
+
     getPublicData(req.query.path?.toString() ?? "", owner, repo).then((data) => {
       res.send(data)
       return
