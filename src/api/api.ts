@@ -60,6 +60,7 @@ export function loadApi() {
   api.listen(httpPort, () => {
     console.log(`Server running on port ${httpPort}`);
   });
+  
   try {
     https.createServer(
       {
@@ -72,6 +73,7 @@ export function loadApi() {
     });
   } catch (error) {
     console.log(error)
+    console.log("Unable to start https port")
   }
   
 
