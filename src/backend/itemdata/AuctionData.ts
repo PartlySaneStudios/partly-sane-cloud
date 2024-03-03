@@ -296,7 +296,7 @@ export async function loadAuctionHouseData() {
               }).then(() => {
                 prisma.$connect().then(() => {
                   prisma.itemLowestBinHistory.createMany(averageLowestBinToCreate).then(() => {
-                    console.log("Finished updating historical auciton data")
+                    console.log("Finished updating historical auction data")
                     prisma.$disconnect()
                   })
                 })
