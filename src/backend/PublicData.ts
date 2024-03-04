@@ -80,23 +80,23 @@ export async function getPublicData(path: string, owner: string, repo: string): 
 async function getData(path: string, owner: string, repo: string): Promise<string> {
   try {
     Octokit
-      const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-          owner: owner,
-          repo: repo,
-          path: path,
-          headers: {
-              'X-GitHub-Api-Version': '2022-11-28'
-          }
-          });
-          const data: any = response.data;
-  
-          // Decode the content from Base64 to UTF-8
-          const decodedContent = Buffer.from(data.content ?? "", 'base64').toString('utf-8');
+    const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+      owner: owner,
+      repo: repo,
+      path: path,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    const data: any = response.data;
 
-      return decodedContent;
+    // Decode the content from Base64 to UTF-8
+    const decodedContent = Buffer.from(data.content ?? "", 'base64').toString('utf-8');
+
+    return decodedContent;
   }
   catch (error) {
-      console.error('Error fetching or decoding file content:', error);
-      throw error; // Re-throw the error to signal that something went wrong
+    console.error('Error fetching or decoding file content:', error);
+    throw error; // Re-throw the error to signal that something went wrong
   }
 }

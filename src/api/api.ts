@@ -20,7 +20,7 @@ export const api = express()
 
 
 const USER_AGENT_BYPASS_ENDPOINTS = [
-  "/v1/pss/middlemanagement/resetpublicdata", 
+  "/v1/pss/middlemanagement/resetpublicdata",
   "/v1/status"
 ]
 
@@ -35,7 +35,7 @@ export function loadApi() {
       index = req.url.length
     }
     const endpoint = req.url.substring(0, index)
-    
+
     if (USER_AGENT_BYPASS_ENDPOINTS.includes(endpoint.toLowerCase())) {
       next()
       return
@@ -60,25 +60,25 @@ export function loadApi() {
   api.listen(httpPort, () => {
     console.log(`Server running on port ${httpPort}`);
   });
-  
+
   try {
     https.createServer(
       {
         key: fs.readFileSync(path.resolve(env.SSL_KEY ?? "")),
         cert: fs.readFileSync(path.resolve(env.SSL_CERT ?? ""))
-      }, 
+      },
       api)
       .listen(httpsPort, () => {
-      console.log(`Server running on port ${httpsPort}`);
-    });
+        console.log(`Server running on port ${httpsPort}`);
+      });
   } catch (error) {
     console.log(error)
     console.log("Unable to start https port")
   }
-  
 
 
-  loadEndpoints()  
+
+  loadEndpoints()
 }
 
 function loadEndpoints() {

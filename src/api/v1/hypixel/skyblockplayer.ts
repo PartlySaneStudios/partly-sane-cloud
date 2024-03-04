@@ -30,7 +30,7 @@ export function loadSkyblockPlayerEndpoint() {
         if (cachedResponse != null) {
           res.send(JSON.parse(cachedResponse.response))
         } else {
-          getSkyblockPlayerData(req.query.uuid!!.toString()).then( (data) => {
+          getSkyblockPlayerData(req.query.uuid!!.toString()).then((data) => {
             if (data.success != true) {
               res.status(500)
               res.send(data.data)
@@ -51,7 +51,7 @@ export function loadSkyblockPlayerEndpoint() {
               })
               res.end()
             }
-    
+
           }).catch((reason) => {
             console.error(reason)
             res.status(500)
@@ -59,12 +59,12 @@ export function loadSkyblockPlayerEndpoint() {
             res.end()
           })
         }
-        }).catch((reason) => {
-          console.error(reason)
-          res.status(500)
-          res.send("PSC Internal server error")
-          res.end()
-        })
+      }).catch((reason) => {
+        console.error(reason)
+        res.status(500)
+        res.send("PSC Internal server error")
+        res.end()
+      })
     })
   })
 }

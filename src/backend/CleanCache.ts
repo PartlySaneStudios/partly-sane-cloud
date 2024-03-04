@@ -18,7 +18,7 @@ export function cleanCache() {
   }).then(() => {
     console.log("Cleaned skyblock player caches")
     prisma.itemAuctionHistory.deleteMany({
-      
+
       where: {
         OR: [
           {
