@@ -8,6 +8,7 @@ import { cleanCache } from './CleanCache';
 import { loadAuctionHouseData } from './itemdata/AuctionData';
 import { loadBazaarData } from './itemdata/BazaarData';
 import { loadItemData } from './itemdata/ItemData';
+import { handleDailyFunFact, loadFunFactData } from './FunFactData';
 
 export const prisma = new PrismaClient()
 
@@ -43,7 +44,8 @@ export function loadBackend() {
   loadBazaarDataInterval = setInterval(loadBazaarData, LOAD_BAZAAR_DATA_MINUTES * 60 * 1000)
   loadAuctionDataInterval = setInterval(loadAuctionHouseData, LOAD_AUCTION_DATA_MINUTES * 60 * 1000)
 
-
+  loadFunFactData();
+  handleDailyFunFact();
 }
 
 

@@ -13,6 +13,7 @@ import { loadHypixelSkyblockItemEndpoint } from "./v1/hypixel/skyblockitem";
 import { loadSkyblockPlayerEndpoint } from "./v1/hypixel/skyblockplayer";
 import { loadPssMiddlemanagementResetpublicdataEndpoint } from "./v1/pss/middlemanagement/resetpublicdatacache";
 import { loadPssPublicdataEndpoint } from "./v1/pss/publicdata";
+import { loadFunFactEndpoint } from "./v1/pss/funfact";
 import { loadV1Endpoint } from "./v1/v1";
 import { loadStatusEndpoint } from "./v1/status";
 
@@ -21,7 +22,8 @@ export const api = express()
 
 const USER_AGENT_BYPASS_ENDPOINTS = [
   "/v1/pss/middlemanagement/resetpublicdata",
-  "/v1/status"
+  "/v1/pss/funfact",
+  "/v1/status",
 ]
 
 export function loadApi() {
@@ -86,6 +88,7 @@ function loadEndpoints() {
   loadHypixelSkyblockItemEndpoint()
   loadSkyblockPlayerEndpoint()
   loadPssPublicdataEndpoint()
+  loadFunFactEndpoint()
   loadPssMiddlemanagementResetpublicdataEndpoint()
   loadStatusEndpoint()
 }

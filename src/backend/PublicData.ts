@@ -3,12 +3,9 @@
 // See LICENSE for copyright and license notices.
 //
 
-import { Octokit } from 'octokit'
 import { PUBLIC_DATA_CACHE_TIME_MINUTES, prisma } from './backend';
 import { onCooldown } from '../utils/MathUtils';
-
-const octokit = new Octokit({});
-
+import { getData } from '../utils/SystemUtils';
 
 
 export async function getPublicData(path: string, owner: string, repo: string): Promise<string> {
@@ -66,37 +63,4 @@ export async function getPublicData(path: string, owner: string, repo: string): 
   }
 
   return data
-}
-
-
-
-
-/*
-* @param {string} path
-* @param {string} owner
-* @param {string} repo
-* @returns {object} {json, sha}
-*/
-async function getData(path: string, owner: string, repo: string): Promise<string> {
-  try {
-    Octokit
-    const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-      owner: owner,
-      repo: repo,
-      path: path,
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
-    });
-    const data: any = response.data;
-
-    // Decode the content from Base64 to UTF-8
-    const decodedContent = Buffer.from(data.content ?? "", 'base64').toString('utf-8');
-
-    return decodedContent;
-  }
-  catch (error) {
-    console.error('Error fetching or decoding file content:', error);
-    throw error; // Re-throw the error to signal that something went wrong
-  }
 }
