@@ -97,7 +97,7 @@ model PublicData {
 }
 
 model FunFact {
-  id Int @id
+  id Int @id @default(autoincrement())
   fact String
-  isTodaysFact Boolean
+  day Int
 }

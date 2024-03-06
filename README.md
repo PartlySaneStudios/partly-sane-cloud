@@ -14,12 +14,14 @@ HYPIXEL_API_KEY=""
 CLEAR_CACHE_KEY=""
 SSL_KEY=""
 SSL_CERT=""
+
+FUN_FACT_START_TIME=""
 ```
 
 
 #### MySQL database
 
-You must set up a MySQL database in order to use Prisma. <!-- Honestly I am not qualified to talk about this -->]
+You must set up a MySQL database in order to use Prisma. <!-- Honestly I am not qualified to talk about this -->
 
 When you have completed the MySQL set up, replace the ``DATABASE_URL`` field in your ``.env`` file with ``mysql://(USER):(PASSWORD)@localhost:3306/(DATABASENAME)``, replacing ``(USER)`` with your username, ``(PASSWORD)`` with your password, and ``(DATABASENAME)`` with your database. You can also replace ``localhost:3306`` with the correct database address if you are not using ``localhost`` with the default port.
 
@@ -35,6 +37,10 @@ Partly Sane Cloud caches the public data in a prisma model. In order to clear it
 #### SSL Certificates (Optional)
 
 If you would like to use HTTPS, you must have SSL certificates. Whenever you have your certificates, set your the path to your SSL private key as ``SSL_KEY``, and the path to your SSL certificate as ``SSL_CERT`` in the ``.env`` file.
+
+#### Fun Fact Start Time
+
+The time, from which the Daily Fun Fact counts up. If you don't enter one, it uses 06.03.2024 as a fallback.
 
 ## Node
 
