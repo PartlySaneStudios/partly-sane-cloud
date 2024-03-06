@@ -19,6 +19,16 @@ An endpoint that proxies the PartlySaneStudios/partly-sane-skies-public-data Git
 Returns:
 The raw file of the GitHub. (This data may be cached)
 
+## /v1/pss/funfact
+And endpoint that returns a daily funfact.
+
+Response:
+```json
+{
+  "funFact": "While being the Lead Dev, Flagmaster only ever did 35 commits in which he changed ~1.5k lines"
+}
+```
+
 ## v1/pss/middlemanagement/resetpublicdatacache
 
 
