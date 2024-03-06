@@ -13,6 +13,7 @@ const FILE_PATH = "data/constants/fun_facts.json";
 
 export async function getDailyFunFact(): Promise<string> {
     try {
+        await prisma.$connect();
         let foundData = await prisma.funFact.findFirst({
             where: {
                 isTodaysFact: true
@@ -26,6 +27,7 @@ export async function getDailyFunFact(): Promise<string> {
                 }
             })
         }
+        await prisma.$disconnect();
 
         return foundData?.fact ?? "No fun fact found";
     } catch (error) {
@@ -49,6 +51,7 @@ export async function handleDailyFunFact(): Promise<void> {
             // Get previous funfact index
             const previousFactIndex = funFacts.find(fact => fact.isTodaysFact)?.id ?? 0;
 
+            await prisma.$connect();
             // Set all isTodayFact to false
             await prisma.funFact.updateMany({
                 where: {
@@ -58,10 +61,14 @@ export async function handleDailyFunFact(): Promise<void> {
                     isTodaysFact: false
                 }
             });
+            await prisma.$disconnect();
 
             // Set the next fun fact to true
             const nextFunFactId = previousFactIndex + 1 > funFacts.length ? 0 : previousFactIndex + 1;
 
+            console.log(`Setting fun fact ${nextFunFactId} as today's fact`)
+
+            await prisma.$connect();
             await prisma.funFact.update({
                 where: {
                     id: nextFunFactId
@@ -70,6 +77,7 @@ export async function handleDailyFunFact(): Promise<void> {
                     isTodaysFact: true
                 }
             });
+            await prisma.$disconnect();
 
             console.log(`Daily fun fact updated for ${new Date().toLocaleDateString()}`);
         }
@@ -81,6 +89,11 @@ export async function handleDailyFunFact(): Promise<void> {
 export async function loadFunFactData(override: boolean = false): Promise<void> {
     const funFacts = await prisma.funFact.findMany();
     if (funFacts.length == 0 || override) {
+        // Clear old fun facts
+        await prisma.$connect();
+        await prisma.funFact.deleteMany({});
+        await prisma.$disconnect();
+
         console.log("No fun facts found. Loading from repo...");
         const rawFunFactData = await getData(FILE_PATH, OWNER, REPO);
 
@@ -88,15 +101,18 @@ export async function loadFunFactData(override: boolean = false): Promise<void> 
             const funFactData = JSON.parse(rawFunFactData);
             const factsArray = funFactData["facts"];
 
+            await prisma.$connect();
             for (const fact of factsArray) {
                 await prisma.funFact.create({
                     data: {
+                        id: factsArray.indexOf(fact) + 1,
                         fact: fact,
                         isTodaysFact: false
                     }
                 });
             }
-            console.log("Fun facts loaded from Repo.");
+            await prisma.$disconnect();
+            console.log(`${factsArray.length} Fun facts loaded from Repo.`);
         } catch (error) {
             console.error("Error loading fun facts from repo:", error);
         }
