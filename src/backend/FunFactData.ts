@@ -8,7 +8,7 @@ import { prisma } from './backend';
 import { CronJob } from 'cron';
 
 const REPO = "partly-sane-skies-public-data";
-const OWNER = "j10a1n15";
+const OWNER = "PartlySaneStudios";
 const FILE_PATH = "data/constants/fun_facts.json";
 
 export async function getDailyFunFact(): Promise<string> {
