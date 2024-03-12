@@ -96,3 +96,8 @@ model PublicData {
   lastTimeUpdate DateTime @default(now())
 }
 
+model FunFact {
+  id Int @id @default(autoincrement())
+  fact String
+  day Int
+}
