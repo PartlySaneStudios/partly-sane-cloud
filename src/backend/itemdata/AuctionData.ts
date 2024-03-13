@@ -136,7 +136,6 @@ export async function loadAuctionHouseData() {
     Promise.all(auctionHistoriesPromises).then(() => {
       console.log("Finished caching auction data")
       prisma.$disconnect()
-      // console.log("created all auction data")
       prisma.$connect().then(() => {
         prisma.itemData.findMany({ // finds all of the items that have active auctions 
           where: {
@@ -215,7 +214,8 @@ export async function loadAuctionHouseData() {
             let lowestBin = Number.MAX_VALUE
             for (let k = 0; k < (item.aucitonData?.auctionHistory?.length ?? 0); k++) {
               let history = item.aucitonData?.auctionHistory[k]
-              if (history?.startingBid ?? Number.MAX_VALUE < lowestBin) {
+              // console.log(`ItemId: ${item.itemId}, Price: ${history?.startingBid ?? 0}, Lowest Bin: ${lowestBin} IsLowestBin: ${(history?.startingBid ?? Number.MAX_VALUE) < lowestBin},`)
+              if ((history?.startingBid ?? Number.MAX_VALUE) < lowestBin) {
                 lowestBin = Number(history!!.startingBid)
               }
             }
