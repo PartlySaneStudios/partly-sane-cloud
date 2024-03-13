@@ -59,7 +59,7 @@ export function loadApi() {
   })
 
 
-  api.listen(httpPort, () => {
+  api.listen(httpPort, "::", () => {
     console.log(`Server running on port ${httpPort}`);
   });
 
@@ -70,7 +70,7 @@ export function loadApi() {
         cert: fs.readFileSync(path.resolve(env.SSL_CERT ?? ""))
       },
       api)
-      .listen(httpsPort, () => {
+      .listen(httpsPort, "::",() => {
         console.log(`Server running on port ${httpsPort}`);
       });
   } catch (error) {
