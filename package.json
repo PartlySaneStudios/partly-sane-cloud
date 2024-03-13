@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon -x 'ts-node ./src/index.ts' ",
-    "deploy": "npx pm2 stop ./dist/index.js && npx tsc && npx pm2 start ./dist/index.js"
+    "dev": "npx nodemon ./src/index.ts",
+    "deploy": "npx tsc && npx pm2 start ./dist/index.js",
+    "restart": "npx pm2 stop ./dist/index.js && npx tsc && npx pm2 start ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
