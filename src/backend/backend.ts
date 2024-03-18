@@ -15,6 +15,7 @@ export const prisma = new PrismaClient()
 export const PLAYER_CACHE_TIME_MINUTES = 10 // How long player data should be kept
 export const AUCTION_CACHE_TIME_MINUTES = 14 // How long auction data should be kept
 export const PUBLIC_DATA_CACHE_TIME_MINUTES = 60 // How long public data repo should be cached before rerequesting
+export const ITEM_DATA_HISTORY_CACHE_TIME_MINUTES = 60 * 24 * 2 // How long the item data should be kept in minutes
 const LOAD_ITEM_DATA_MINUTES = 100 // How often (how long between) item data should be rerequested
 const LOAD_BAZAAR_DATA_MINUTES = 7 // How often (how long between) bazaar data should be rerequested
 const LOAD_AUCTION_DATA_MINUTES = 12 // How often (how long between) auction data should be rerequested

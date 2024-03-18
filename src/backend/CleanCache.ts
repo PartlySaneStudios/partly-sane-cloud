@@ -3,51 +3,67 @@
 // See LICENSE for copyright and license notices.
 //
 
-import { AUCTION_CACHE_TIME_MINUTES, PLAYER_CACHE_TIME_MINUTES, prisma } from "./backend";
+import { AUCTION_CACHE_TIME_MINUTES, ITEM_DATA_HISTORY_CACHE_TIME_MINUTES, PLAYER_CACHE_TIME_MINUTES, prisma } from "./backend";
 
 
 // Deletes any data that has been saved for over 10 minutes
-export function cleanCache() {
+export async function cleanCache() {
   console.log("Cleaning caches")
-  prisma.skyblockPlayer.deleteMany({
+  await prisma.skyblockPlayer.deleteMany({
     where: {
       updateTime: {
         lte: (Date.now() - (PLAYER_CACHE_TIME_MINUTES * 60 * 1000))
       }
     }
-  }).then(() => {
-    console.log("Cleaned skyblock player caches")
-    prisma.itemAuctionHistory.deleteMany({
+  })    
+  console.log("Cleaned skyblock player caches")
 
-      where: {
-        OR: [
-          {
-            time: {
-              lte: new Date(Date.now() - (AUCTION_CACHE_TIME_MINUTES * 60 * 1000))
-            },
-          },
-          {
-            end: {
-              lte: Date.now()
-            }
-          }
-        ]
-      }
-    }).then(() => {
-      console.log("Cleaned auction caches")
-      prisma.itemBazaarHistory.deleteMany({
-        where: {
+  await prisma.itemAuctionHistory.deleteMany({
+    where: {
+      OR: [
+        {
           time: {
             lte: new Date(Date.now() - (AUCTION_CACHE_TIME_MINUTES * 60 * 1000))
+          },
+        },
+        {
+          end: {
+            lte: Date.now()
           }
         }
-      }).then(() => {
-        console.log("Cleaned bazaar caches")
-      }).then(() => {
-        prisma.$disconnect()
-      })
-    })
-  }).catch((error) => {
-    console.error(error)
+      ]
+    }
   })
+  console.log("Cleaned auction caches")
+
+  await prisma.itemLowestBinHistory.deleteMany({
+    where: {
+      time: {
+        lte: new Date(Date.now() - (ITEM_DATA_HISTORY_CACHE_TIME_MINUTES * 60 * 1000))
+      }
+    }
+  })
+  console.log("Cleaned old lowest bins")
+
+  await prisma.itemBazaarHistory.deleteMany({
+    where: {
+      time: {
+        lte: new Date(Date.now() - (AUCTION_CACHE_TIME_MINUTES * 60 * 1000))
+      }
+    }
+  })
+  console.log("Cleaned bazaar caches")
+
+  await prisma.bazaarItemPrice.deleteMany({
+    where: {
+      time: {
+        lte: Date.now() - (ITEM_DATA_HISTORY_CACHE_TIME_MINUTES * 60 * 1000)
+      }
+    }
+  })
+  console.log("Cleaned old bazaar data")
+
+  
+  await prisma.$disconnect()
+
 }
