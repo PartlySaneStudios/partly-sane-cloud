@@ -25,6 +25,10 @@ const USER_AGENT_BYPASS_ENDPOINTS = [
   "/v1/pss/funfact",
   "/v1/status",
 ]
+const USER_AGENTS = [
+  "Partly-Sane-Skies/",
+  "Sanity/"
+]
 
 export function loadApi() {
   const httpPort = 80;
@@ -43,7 +47,18 @@ export function loadApi() {
       return
     }
 
-    if (req.headers["user-agent"] == null || !req.headers["user-agent"]!!.startsWith("Partly-Sane-Skies/")) { // If it is not a partly sane skies user agent
+    let authorized = false
+
+    if (req.headers["user-agent"] != null) {
+      for (const agent in USER_AGENTS) {
+        if (req.headers["user-agent"]!!.startsWith(agent)) {
+          authorized = true;
+          break
+        }
+      }
+    }
+
+    if (!authorized) { // If it is not a partly sane skies user agent
 
       let userAgent: string = "undefined"
       if (userAgent != null) {
