@@ -20,13 +20,21 @@ import { loadStatusEndpoint } from "./v1/status";
 export const api = express()
 
 
-const USER_AGENT_BYPASS_ENDPOINTS = [
-  "/v1/pss/middlemanagement/resetpublicdata",
-  "/v1/pss/funfact",
-  "/v1/status",
-]
+const DEFAULT_ENDPOINT_SETTINGS: {
+  validUserAgents: string[]
+  ignoreAgentLogging: string[]
+} = {
+  validUserAgents: [],
+  ignoreAgentLogging: []
+}
+const ENDPOINT_SETTINGS: Map<String, {
+    validUserAgents: string[]
+    ignoreAgentLogging: string[]
+  }> = new Map<string, any>();
 
 export function loadApi() {
+  loadEndpointData()
+
   const httpPort = 80;
   const httpsPort = 443
   api.use(json())
@@ -38,12 +46,20 @@ export function loadApi() {
     }
     const endpoint = req.url.substring(0, index)
 
-    if (USER_AGENT_BYPASS_ENDPOINTS.includes(endpoint.toLowerCase())) {
-      next()
-      return
+
+    let authorized = false
+    const useragents = getValidUseragents(endpoint.toLowerCase())
+
+    if (req.headers["user-agent"] != null) {
+      for (const agent in useragents) {
+        if (req.headers["user-agent"]!!.startsWith(agent) || agent == "**/") {
+          authorized = true;
+          break
+        }
+      }
     }
 
-    if (req.headers["user-agent"] == null || !req.headers["user-agent"]!!.startsWith("Partly-Sane-Skies/")) { // If it is not a partly sane skies user agent
+    if (!authorized) { // If it is not a partly sane skies user agent
 
       let userAgent: string = "undefined"
       if (userAgent != null) {
@@ -81,6 +97,28 @@ export function loadApi() {
 
 
   loadEndpoints()
+}
+
+import useragentsJson from '../api/config/useragents.json'
+
+function loadEndpointData() {
+  DEFAULT_ENDPOINT_SETTINGS.ignoreAgentLogging = useragentsJson.default.ignoreLogging
+  DEFAULT_ENDPOINT_SETTINGS.validUserAgents = useragentsJson.default.validAgents
+
+  const endpoints: any = useragentsJson.endpoints 
+  for (const endpoint in Object.keys(useragentsJson.endpoints)) {
+    const endpointSettings = endpoints[endpoint]
+    const validAgents = endpointSettings.validAgents
+    const ignoreAgentLogging = endpointSettings.ignoreLogging
+    ENDPOINT_SETTINGS.set(endpoint,  {
+      validUserAgents: validAgents,
+      ignoreAgentLogging: ignoreAgentLogging
+    })
+  }
+}
+
+function getValidUseragents(endpoint: string): string[] {
+  return ENDPOINT_SETTINGS.get(endpoint)?.validUserAgents ?? DEFAULT_ENDPOINT_SETTINGS.validUserAgents
 }
 
 function loadEndpoints() {

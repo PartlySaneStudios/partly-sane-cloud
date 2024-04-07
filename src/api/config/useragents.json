@@ -1,0 +1,40 @@
+{
+  "default" : {
+    "validAgents" : [
+      "Partly-Sane-Skies/",
+      "Sanity/"
+    ],
+
+    "ignoreLogging": [
+      
+    ],
+
+    "agentRateLimit": {
+      "Partly-Sane-Skies/": 1000,
+      "Sanity/": 100
+    }
+  },
+
+  "endpoints" : {
+    "/v1/pss/middlemanagement/resetpublicdata" : {
+      "validAgents" : [
+        "**/"
+      ],
+  
+      "ignoreLogging": [
+        
+      ]
+    },
+    "/v1/status" : {
+      "validAgents" : [
+        "**/"
+      ],
+  
+      "ignoreAgentLogging": [
+        
+      ]
+    }
+  }
+
+  
+}
