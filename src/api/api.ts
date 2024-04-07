@@ -51,7 +51,8 @@ export function loadApi() {
     const useragents = getValidUseragents(endpoint.toLowerCase())
 
     if (req.headers["user-agent"] != null) {
-      for (const agent in useragents) {
+      for (let i = 0; i < useragents.length; i++) {
+        const agent = useragents[i]
         if (req.headers["user-agent"]!!.startsWith(agent) || agent == "**/") {
           authorized = true;
           break
@@ -106,8 +107,11 @@ function loadEndpointData() {
   DEFAULT_ENDPOINT_SETTINGS.validUserAgents = useragentsJson.default.validAgents
 
   const endpoints: any = useragentsJson.endpoints 
-  for (const endpoint in Object.keys(useragentsJson.endpoints)) {
+  for (let i = 0; i < Object.keys(useragentsJson.endpoints).length; i++) {
+    const endpoint =  Object.keys(useragentsJson.endpoints)[i]
+    console.log(endpoint)
     const endpointSettings = endpoints[endpoint]
+    console.log(endpointSettings)
     const validAgents = endpointSettings.validAgents
     const ignoreAgentLogging = endpointSettings.ignoreLogging
     ENDPOINT_SETTINGS.set(endpoint,  {
