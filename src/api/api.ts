@@ -115,8 +115,8 @@ function loadEndpointData() {
     const validAgents = endpointSettings.validAgents
     const ignoreAgentLogging = endpointSettings.ignoreLogging
     ENDPOINT_SETTINGS.set(endpoint,  {
-      validUserAgents: validAgents,
-      ignoreAgentLogging: ignoreAgentLogging
+      validUserAgents: validAgents  ?? DEFAULT_ENDPOINT_SETTINGS.validUserAgents,
+      ignoreAgentLogging: ignoreAgentLogging ?? DEFAULT_ENDPOINT_SETTINGS.ignoreAgentLogging
     })
   }
 }
