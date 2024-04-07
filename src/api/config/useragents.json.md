@@ -37,7 +37,7 @@ Example:
 ```json
 "/v1/status" : {
   "validAgents" : [
-    "**/" // Signifies all endpoints
+    "**/" // Signifies all agents
   ],
 
   "ignoreAgentLogging": [
