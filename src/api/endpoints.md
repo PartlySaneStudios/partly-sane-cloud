@@ -103,7 +103,7 @@ Response:
 }
 ```
 
-## ``/v1/hypixel/skyblock``
+## ``/v1/hypixel/skyblockitem``
 
 An endpoint relating to skyblock items.
 
