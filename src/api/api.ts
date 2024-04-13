@@ -109,9 +109,7 @@ function loadEndpointData() {
   const endpoints: any = useragentsJson.endpoints 
   for (let i = 0; i < Object.keys(useragentsJson.endpoints).length; i++) {
     const endpoint =  Object.keys(useragentsJson.endpoints)[i]
-    console.log(endpoint)
     const endpointSettings = endpoints[endpoint]
-    console.log(endpointSettings)
     const validAgents = endpointSettings.validAgents
     const ignoreAgentLogging = endpointSettings.ignoreLogging
     ENDPOINT_SETTINGS.set(endpoint,  {
