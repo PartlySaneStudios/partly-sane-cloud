@@ -25,21 +25,23 @@ export function serializeBase64NBT(base64: string): any {
 */
 export async function getData(path: string, owner: string, repo: string): Promise<string> {
   try {
-    Octokit
     const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
       owner: owner,
       repo: repo,
       path: path,
       headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
+        'X-GitHub-Api-Version': '2022-11-28',
+        "Accept": "application/vnd.github.v3.raw"
       }
+      
     });
     const data: any = response.data;
+    
+    // Not needed with the header "Accept": "application/vnd.github.v3.raw"
+    // // Decode the content from Base64 to UTF-8
+    // const decodedContent = Buffer.from(data.content ?? "", 'base64').toString('utf-8');
 
-    // Decode the content from Base64 to UTF-8
-    const decodedContent = Buffer.from(data.content ?? "", 'base64').toString('utf-8');
-
-    return decodedContent;
+    return data;
   }
   catch (error) {
     console.error('Error fetching or decoding file content:', error);
