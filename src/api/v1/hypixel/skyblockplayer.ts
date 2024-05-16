@@ -10,61 +10,52 @@ import { api } from "../../api";
 
 
 export function loadSkyblockPlayerEndpoint() {
-  api.get('/v1/hypixel/skyblockplayer', (req, res) => {
+  api.get('/v1/hypixel/skyblockplayer', async (req, res) => {
 
     if (req.query.uuid == null) {
-      res.status(400)
       res.send("No uuid provided")
+      res.status(400)
       res.end()
       return
     }
 
     const uuid = req.query.uuid!!.toString()
-    prisma.$connect().then(() => {
-      prisma.skyblockPlayer.findFirst({
-        where: {
-          uuid: uuid
-        }
-      }).then((cachedResponse) => {
-        prisma.$disconnect()
-        if (cachedResponse != null) {
-          res.send(JSON.parse(cachedResponse.response))
-        } else {
-          getSkyblockPlayerData(req.query.uuid!!.toString()).then((data) => {
-            if (data.success != true) {
-              res.status(500)
-              res.send(data.data)
-              res.end()
-            } else {
-              res.send(data.data)
-              prisma.$connect().then(() => {
-                prisma.skyblockPlayer.createMany({
-                  skipDuplicates: true,
-                  data: {
-                    uuid: uuid,
-                    response: data.data,
-                    updateTime: Date.now()
-                  }
-                }).then(() => {
-                  prisma.$disconnect()
-                })
-              })
-              res.end()
-            }
 
-          }).catch((reason) => {
-            console.error(reason)
-            res.status(500)
-            res.send("PSC Internal server error")
-            res.end()
-          })
-        }
-      }).catch((reason) => {
-        console.error(reason)
-        res.status(500)
-        res.send("PSC Internal server error")
-        res.end()
-      })
+    await prisma.$connect()
+    const cachedResponse = await prisma.skyblockPlayer.findFirst({
+      where: {
+        uuid: uuid
+      }
     })
+    
+
+    if (cachedResponse != null) {
+      res.send(JSON.parse(cachedResponse.response))
+
+      prisma.$disconnect()
+    } else {
+      const data = await getSkyblockPlayerData(req.query.uuid!!.toString())
+      if (data.success != true) {
+        res.send(data.data)
+        res.status(500)
+        res.end()
+      } else {
+        res.send(data.data)
+        res.end()
+
+        prisma.$connect().then(() => {
+          prisma.skyblockPlayer.createMany({
+            skipDuplicates: true,
+            data: {
+              uuid: uuid,
+              response: data.data,
+              updateTime: Date.now()
+            }
+          }).then(() => {
+            prisma.$disconnect()
+          })
+        })
+      }
+    }
   })
 }

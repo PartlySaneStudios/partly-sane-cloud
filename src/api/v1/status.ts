@@ -7,9 +7,9 @@ import { api } from "../api";
 
 
 export function loadStatusEndpoint() {
-  api.get('/v1/status', (req, res) => {
-    res.status(200)
+  api.get('/v1/status', async (req, res) => {
     res.send("{ \"success\": true }")
+    res.status(200)
     res.end()
   });
 }

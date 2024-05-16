@@ -9,11 +9,11 @@ import { api } from "../../api";
 
 
 export function loadPssPublicdataEndpoint() {
-  api.get('/v1/pss/publicdata', (req, res) => {
+  api.get('/v1/pss/publicdata', async (req, res) => {
 
     if (req.query.path == null) {
-      res.status(400)
       res.send("No file path provided")
+      res.status(400)
       res.end()
       return
     }
@@ -29,12 +29,13 @@ export function loadPssPublicdataEndpoint() {
       owner = req.query.owner?.toString() ?? owner
     }
 
-    getPublicData(req.query.path?.toString() ?? "", owner, repo).then((data) => {
+    await getPublicData(req.query.path?.toString() ?? "", owner, repo).then((data) => {
       res.send(data)
+      res.status(200)
       return
     }).catch((error) => {
-      console.log(500)
       res.send("Error retrieving file")
+      console.log(500)
       res.end()
       return
     })

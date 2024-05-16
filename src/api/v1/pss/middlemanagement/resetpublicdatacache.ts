@@ -9,20 +9,20 @@ import { prisma } from "../../../../backend/backend";
 
 
 export function loadPssMiddlemanagementResetpublicdataEndpoint() {
-  api.get('/v1/pss/middlemanagement/resetpublicdata', (req, res) => {
+  api.get('/v1/pss/middlemanagement/resetpublicdata', async (req, res) => {
     if (req.query.key != env.CLEAR_CACHE_KEY) {
-      res.status(401)
       res.send("Unfortunately this file is not in the bathroom of a mansion, soooo skill iss-you?")
+      res.status(401)
       res.end()
       return
     }
 
-    prisma.publicData.deleteMany({}).then(() => {
+    await prisma.publicData.deleteMany({}).then(() => {
       prisma.$disconnect()
       res.send("Successfully cleared the public data cache")
     }).catch(() => {
-      res.status(500)
       res.send("Failed to clear the public data cache")
+      res.status(500)
     })
   });
 }

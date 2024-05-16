@@ -102,21 +102,10 @@ export async function loadBazaarData() {
                   const entry = bazaarEntries[key]
                   const sellSummary: any[] = entry.sell_summary
                   let lowestSellPrice = sellSummary[0]?.pricePerUnit ?? 0
-                  for (let k = 0; k < sellSummary.length; k++) {
-                    const value = sellSummary[k]
-                    if (value.pricePerUnit < lowestSellPrice) {
-                      lowestSellPrice = value.pricePerUnit
-                    }
-                  }
+                  
                   const buySummary: any[] = entry.buy_summary
 
                   let highestBuyPrice = buySummary[0]?.pricePerUnit ?? 0
-                  for (let k = 0; k < buySummary.length; k++) {
-                    const value = buySummary[k]
-                    if (value.pricePerUnit > highestBuyPrice) {
-                      highestBuyPrice = value.pricePerUnit
-                    }
-                  }
 
                   const itemHistory = cachedItemHistories[cachedItemIds.indexOf(key)] ?? []
 
