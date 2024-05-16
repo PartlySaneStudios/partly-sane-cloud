@@ -7,16 +7,17 @@ import { getSkyblockItemEndpointResponse } from "../../../backend/itemdata/ItemD
 import { api } from "../../api";
 
 export function loadHypixelSkyblockItemEndpoint() {
-  api.get('/v1/hypixel/skyblockitem', (req, res) => {
+  api.get('/v1/hypixel/skyblockitem', async (req, res) => {
 
-    getSkyblockItemEndpointResponse().then((responseData) => {
-      if (responseData.success == true) {
-        res.send(responseData.data)
-      } else {
-        res.status(500)
-        res.send("Internal Server Error")
-      }
-    })
+    const responseData = await getSkyblockItemEndpointResponse()
+    
+    if (responseData.success == true) {
+      res.send(responseData.data)
+    } else {
+      res.send("Internal Server Error")
+      res.status(500)
+    }
+    
 
   });
 }
