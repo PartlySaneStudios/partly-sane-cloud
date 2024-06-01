@@ -41,7 +41,9 @@ An endpoint that relating to hypixel skyblock player data.
 
 Returns three objects: 
 ``rawPlayer`` is the raw hypixel achievements endpoint object
+
 ``rawProfiles`` is the raw skyblock profiles endpoint object
+
 ``skyblockPlayer`` has the specific data needed for the Partly Sane Skies SkyblockPlayer class
 
 Response:
@@ -53,46 +55,44 @@ Response:
     "currentProfileId": "",
     "profiles": [
       {
-        "profileId": "",
+        "profileId": "372129ee-0608-4cac-9d03-0e11cc2ea896",
         "selected": false,
-        "skyblockExperience": 0,
-        "catacombsExperience": 0,
-        "combatExperience": 0,
-        "miningExperience": 0,
-        "foragingExperience": 0,
-        "farmingExperience": 0,
-        "enchantingExperience": 0,
-        "fishingExperience": 0,
-        "alchemyExperience": 0,
-        "tamingExperience": 0,
-        "armorData": "",
-        "quiverData": "",
-        "petName": "Legendary Sheep Pet",
-        "selectedDungeonClass": "mage",
+        "skyblockExperience": 6508,
+        "catacombsExperience": 8109.877887816092,
+        "combatExperience": 1021496.2201999953,
+        "miningExperience": 19955294.739500005,
+        "foragingExperience": 381659.549999997,
+        "farmingExperience": 4267828.954987992,
+        "enchantingExperience": 1899836.7390862256,
+        "fishingExperience": 680677.476,
+        "alchemyExperience": 741.4,
+        "tamingExperience": 5444878.69250639,
+        "armorData": "H4sIAAAAAAAAAONiYOBkYMzkYmBgYGEAAQCp5xppEQAAAA==",
+        "quiverData": "H4sIAAAAAAAAAO3PvU7DMBAH8H/StCQeALGhLmZESEhMICaiQsVAG6kMzAab1FKaIPuqwhP5PfxgiBQW+gYg3U2n+9DdTwAFEisAjFOkViejBMNJt27pXGBAqh6guLfaTBtV+37qU2BPW//WqI8C2UPnTN5XMxzGcHmrVqo21zKGl7OLvnocw9UjKfJSaW203CxNK/2yoxMcxfAaQzOpZrNqLsvFonrKkc3VymC/b00b25Isnes2EDi4eyenSiJnn9dkfL59FMPvLSDF6OcwtvkO4YYJTGACE5jABCYwgQlM+JOE039I+B1ffYRsN0gMAAA=",
+        "petName": "LEGENDARY SHEEP",
+        "selectedDungeonClass": "healer",
         "normalRuns": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
+            1,
+            5,
+            5,
+            3,
+            0,
+            0,
+            0,
+            0
         ],
         "masterModeRuns": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
         ],
-        "totalRuns": 16,
-        "secretsCount": 0,
+        "totalRuns": 14,
+        "secretsCount": 13697,
         "baseHealth": 100,
         "baseDefense": 0,
         "baseIntelligence": 100,
@@ -120,19 +120,34 @@ Response
       "bazaarSell": 0,
       "averageBazaarBuy": 0,
       "averageBazaarSell": 0,
-      "lowestBin": 7000000,
-      "averageLowestBin": 7000000
+      "lowestBin": 10000000,
+      "averageLowestBin": 13000000,
+      "material": "RAW_FISH",
+      "unstackable": false
     }
   ]
 }
 ```
-``itemId`` - the skyblock id,
+``itemId`` - the skyblock id
+
 ``rarity`` - the skyblock rarity
+
 ``name`` - the ingame default name
+
 ``npcSell`` - the price to sell directly to a merchant NPC
+
 ``bazaarBuy`` - the bazaar instant buy price (sell order)
+
 ``bazaarSell`` - the bazaar instant sell price (buy order)
+
 ``averageBazaarBuy`` - the average instant buy price over the last 24 hours
+
 ``averageBazaarSell`` - the average instant sell price over the last 24 hours
+
 ``lowestBin`` - the current lowest bin
+
 ``averageLowestBin`` - the current average lowest bin
+
+``material`` - the Material the item is made of
+
+``unstackable`` - Whether the item has a custom UUID making it unstackable
