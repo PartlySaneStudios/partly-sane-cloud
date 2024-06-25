@@ -149,7 +149,7 @@ export async function loadItemData() {
 
               if (data != "404: Not Found") {
                 try {
-                  const json = await JSON.parse(data);
+                  const json = JSON.parse(data);
                   nbtTag = json?.nbttag ?? "";
 
                   const loreArray: string[] = json?.lore
