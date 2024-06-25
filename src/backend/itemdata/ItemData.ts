@@ -155,7 +155,7 @@ export async function loadItemData() {
 
                   const loreArray: string[] = json?.lore
                   
-                  lore = loreArray?.join("\n") ?? "";
+                  lore = loreArray?.join("\\n") ?? "";
 
                   recipe = JSON.stringify(json?.recipe ?? "{}");
                 } catch (e) {
