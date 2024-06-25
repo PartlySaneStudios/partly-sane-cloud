@@ -28,9 +28,12 @@ model ItemData {
   itemId String @id
   rarity String
   name String
-  npcSellPrice Float
-  unstackable Boolean
+  lore String @db.LongText
   material String
+  unstackable Boolean
+  recipe String @db.LongText
+  nbtTag String @db.LongText
+  npcSellPrice Float
   bazaarData ItemBazaarData?
   aucitonData ItemAuctionData?
 }
