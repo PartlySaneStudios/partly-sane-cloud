@@ -86,6 +86,7 @@ export async function getSkyblockItemEndpointResponse(): Promise<{ success: bool
 
 
 export async function loadItemData() {
+  console.log("Loading skyblock item data")
   try {
 
     const requestPromises: Promise<string>[] = [
@@ -150,11 +151,13 @@ export async function loadItemData() {
               if (data != "404: Not Found") {
                 try {
                   const json = await JSON.parse(data);
-                  nbtTag = await json?.nbttag;
+                  nbtTag = json?.nbttag ?? "";
 
-                  lore = await json?.lore?.join("\n");                
+                  const loreArray: string[] = json?.lore
+                  
+                  lore = loreArray?.join("\n") ?? "";
 
-                  recipe = JSON.stringify(await json?.recipe ?? "{}");
+                  recipe = JSON.stringify(json?.recipe ?? "{}");
                 } catch (e) {
                   console.error(`Could not load item ${item.id}`);
                   console.error(e);
@@ -211,6 +214,7 @@ export async function loadItemData() {
           prisma.itemData.createMany(itemsToCreate).then(() => {
             Promise.all(updatePromises).then(() => {
               prisma.$disconnect()
+              console.log(`Finished loading ${itemsToCreate.data.length + itemsToUpdate.length} items`)
             }).catch((error) => {
               console.error(error)
             })

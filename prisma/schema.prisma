@@ -28,7 +28,7 @@ model ItemData {
   itemId String @id
   rarity String
   name String
-  lore String
+  lore String @db.LongText
   material String
   unstackable Boolean
   recipe String @db.LongText
