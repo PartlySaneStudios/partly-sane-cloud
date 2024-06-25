@@ -2,7 +2,8 @@
   "default" : {
     "validAgents" : [
       "Partly-Sane-Skies/",
-      "Sanity/"
+      "Sanity/",
+      "SkyblockTweaks/"
     ],
 
     "ignoreLogging": [
