@@ -95,14 +95,12 @@ export function loadApi() {
     console.log("Unable to start https port")
   }
 
-
-
   loadEndpoints()
 }
 
 import useragentsJson from '../api/config/useragents.json'
-import { loadMojangAPIByNameEndpoint } from "./v1/pss/mojangresponse/byname";
-import { loadMojangAPIByUUIDEndpoint } from "./v1/pss/mojangresponse/byuuid";
+import { loadMojangAPIByNameEndpoint } from "./v1/pss/mojangapi/byname";
+import { loadMojangAPIByUUIDEndpoint } from "./v1/pss/mojangapi/byuuid";
 
 function loadEndpointData() {
   DEFAULT_ENDPOINT_SETTINGS.ignoreAgentLogging = useragentsJson.default.ignoreLogging
