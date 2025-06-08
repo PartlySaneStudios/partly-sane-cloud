@@ -101,6 +101,8 @@ export function loadApi() {
 }
 
 import useragentsJson from '../api/config/useragents.json'
+import { loadMojangAPIByNameEndpoint } from "./v1/pss/mojangresponse/byname";
+import { loadMojangAPIByUUIDEndpoint } from "./v1/pss/mojangresponse/byuuid";
 
 function loadEndpointData() {
   DEFAULT_ENDPOINT_SETTINGS.ignoreAgentLogging = useragentsJson.default.ignoreLogging
@@ -131,4 +133,6 @@ function loadEndpoints() {
   loadFunFactEndpoint()
   loadPssMiddlemanagementResetpublicdataEndpoint()
   loadStatusEndpoint()
+  loadMojangAPIByNameEndpoint()
+  loadMojangAPIByUUIDEndpoint()
 }
