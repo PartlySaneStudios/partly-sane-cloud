@@ -3,7 +3,7 @@
 // See LICENSE for copyright and license notices.
 //
 
-import { AUCTION_CACHE_TIME_MINUTES, ITEM_DATA_HISTORY_CACHE_TIME_MINUTES, PLAYER_CACHE_TIME_MINUTES, prisma } from "./backend";
+import { AUCTION_CACHE_TIME_MINUTES, ITEM_DATA_HISTORY_CACHE_TIME_MINUTES, PLAYER_CACHE_TIME_MINUTES, prisma, UUID_CACHE_TIME_MINUTES } from "./backend";
 
 
 // Deletes any data that has been saved for over 10 minutes
@@ -15,8 +15,7 @@ export async function cleanCache() {
         lte: (Date.now() - (PLAYER_CACHE_TIME_MINUTES * 60 * 1000))
       }
     }
-  })    
-  console.log("Cleaned skyblock player caches")
+  }).then(v => console.log(`Cleaned ${v.count} old skyblock player caches`))
 
   await prisma.itemAuctionHistory.deleteMany({
     where: {
@@ -33,8 +32,7 @@ export async function cleanCache() {
         }
       ]
     }
-  })
-  console.log("Cleaned auction caches")
+  }).then(v => console.log(`Cleaned ${v.count} old auctions caches`))
 
   await prisma.itemLowestBinHistory.deleteMany({
     where: {
@@ -42,8 +40,7 @@ export async function cleanCache() {
         lte: new Date(Date.now() - (ITEM_DATA_HISTORY_CACHE_TIME_MINUTES * 60 * 1000))
       }
     }
-  })
-  console.log("Cleaned old lowest bins")
+  }).then(v => console.log(`Cleaned ${v.count} old lowest bins`))
 
   await prisma.itemBazaarHistory.deleteMany({
     where: {
@@ -51,7 +48,7 @@ export async function cleanCache() {
         lte: new Date(Date.now() - (AUCTION_CACHE_TIME_MINUTES * 60 * 1000))
       }
     }
-  })
+  }).then(v => console.log(`Cleaned ${v.count} old bazaar caches`))
   console.log("Cleaned bazaar caches")
 
   await prisma.bazaarItemPrice.deleteMany({
@@ -60,10 +57,15 @@ export async function cleanCache() {
         lte: Date.now() - (ITEM_DATA_HISTORY_CACHE_TIME_MINUTES * 60 * 1000)
       }
     }
-  })
-  console.log("Cleaned old bazaar data")
+  }).then(v => console.log(`Cleaned ${v.count} old bazaar data`))
 
-  
+  const v = await prisma.uUID.deleteMany({
+    where: {
+      lastTimeUpdate: {
+        lt: new Date(Date.now() - UUID_CACHE_TIME_MINUTES * 60 * 1000)
+      }
+    }
+  }).then(v => console.log(`Cleaned ${v.count} old uuid data`))
+
   await prisma.$disconnect()
-
 }

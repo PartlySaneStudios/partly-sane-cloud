@@ -27,7 +27,6 @@ export function loadSkyblockPlayerEndpoint() {
         uuid: uuid
       }
     })
-    
 
     if (cachedResponse != null) {
       res.send(JSON.parse(cachedResponse.response))

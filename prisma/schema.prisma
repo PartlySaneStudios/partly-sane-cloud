@@ -104,3 +104,10 @@ model FunFact {
   fact String
   day Int
 }
+
+model UUID {
+  id Int @id @default(autoincrement())
+  username String
+  uuid String
+  lastTimeUpdate DateTime @default(now())
+}
