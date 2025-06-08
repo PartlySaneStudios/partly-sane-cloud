@@ -8,7 +8,6 @@ import { api } from "../../api";
 
 export function loadHypixelSkyblockItemEndpoint() {
   api.get('/v1/hypixel/skyblockitem', async (req, res) => {
-
     const responseData = await getSkyblockItemEndpointResponse()
     
     if (responseData.success == true) {
@@ -17,7 +16,5 @@ export function loadHypixelSkyblockItemEndpoint() {
       res.send("Internal Server Error")
       res.status(500)
     }
-    
-
   });
 }

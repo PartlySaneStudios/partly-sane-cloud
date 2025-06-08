@@ -133,7 +133,7 @@ export async function getSkyblockPlayerData(uuid: string): Promise<{ success: bo
         if (pet?.active != true) {
           continue
         }
-        selectedPetName = ((pet?.tier ?? "") + " " + (pet?.type ?? "").replace(/\"/g, "").replace(/_/g, " ")) ?? ""
+        selectedPetName = ((pet?.tier ?? "") + " " + (pet?.type ?? "").replace(/\"/g, "").replace(/_/g, " "))
       }
     }
 
