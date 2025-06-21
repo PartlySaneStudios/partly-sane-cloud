@@ -71,6 +71,7 @@ Response:
 
 ## v1/pss/middlemanagement/resetpublicdatacache
 
+Resets the caches for the public data endpoint.
 
 ## ``/v1/hypixel/skyblockplayer``
 
