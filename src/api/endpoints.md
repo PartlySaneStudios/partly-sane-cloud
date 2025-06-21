@@ -19,6 +19,46 @@ An endpoint that proxies the PartlySaneStudios/partly-sane-skies-public-data Git
 Returns:
 The raw file of the GitHub. (This data may be cached)
 
+## /v1/pss/mojangapi/byname
+Parameters:
+``name``: The name of the user who's Mojang profile you are trying to query
+
+An endpoint that proxies and caches the Mojang API for stability and speed.
+
+Returns two strings:
+
+``name``: The name associated with the given profile
+
+``uuid``: The uuid associated with the given profile
+
+Response:
+```json
+{
+  "id":"d3edf183d15040a497545df5669c8878",
+  "name":"Su386"
+}
+```
+
+## /v1/pss/mojangapi/byuuid
+Parameters:
+``uuid``: The uuid of the user who's Mojang profile you are trying to query
+
+An endpoint that proxies and caches the Mojang API for stability and speed.
+
+Returns two strings:
+
+``name``: The name associated with the given profile
+
+``uuid``: The uuid associated with the given profile
+
+Response:
+```json
+{
+  "id":"d3edf183d15040a497545df5669c8878",
+  "name":"Su386"
+}
+```
+
 ## /v1/pss/funfact
 And endpoint that returns a daily funfact.
 
@@ -31,6 +71,7 @@ Response:
 
 ## v1/pss/middlemanagement/resetpublicdatacache
 
+Resets the caches for the public data endpoint.
 
 ## ``/v1/hypixel/skyblockplayer``
 
